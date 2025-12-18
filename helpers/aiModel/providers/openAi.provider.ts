@@ -16,6 +16,14 @@ class OpenAIModel implements AiModel {
             return completions.choices[0].message?.content || '';
         });
     }
+    async generateWithSystemAndUserPrompts(systemPrompt: string, userPrompt: string, modelName: string): Promise<string> {
+         return this.model.chat.completions.create({
+            model: modelName,
+            messages: [{ role: 'user', content: userPrompt }, { role: 'system', content: systemPrompt }],
+        }).then(completions => {
+            return completions.choices[0].message?.content || '';
+        });
+    }
     async getAvailableModels(): Promise<string[]> {
         const models = await this.model.models.list();
         return models.data.map(model => model.id);

@@ -12,6 +12,10 @@ class GeminiModel implements AiModel {
         const geminiResponse = await geminiModel.generateContent(prompt);
         return geminiResponse.response.text();
     }
+    async generateWithSystemAndUserPrompts(systemPrompt: string, userPrompt: string, modelName: string): Promise<string> {
+        const fullPrompt = `${systemPrompt}\n\n${userPrompt}`;
+        return this.generateResponse(fullPrompt, modelName);
+    }
     async getAvailableModels(): Promise<string[]> {
         const apiKey = process.env.GOOGLE_API_KEY;
         if (!apiKey) {

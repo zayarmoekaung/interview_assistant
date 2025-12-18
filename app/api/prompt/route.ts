@@ -1,5 +1,5 @@
 import { NextResponse, NextRequest } from 'next/server';
-import { createAiModel } from '@/helper/aiModel/aiModel.helper';
+import { createAiModel } from '@/helpers/aiModel/aiModel.helper';
 import { Model,ModelSchema } from '@/types/model.type';
 export async function POST(request: NextRequest) {
     const { prompt, model } = await request.json();
