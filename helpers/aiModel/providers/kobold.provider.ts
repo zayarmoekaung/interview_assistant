@@ -1,40 +1,51 @@
 import { AiModel } from "../types/aiModel.types";
 import OpenAI from 'openai';
-import { HealthCheckResponse } from "@/types/healthCheck.type";
 import { healthCheckPrompt } from "@/prompts/health_check.prompt";
-class OpenAIModel implements AiModel {
+import { HealthCheckResponse } from "@/types/healthCheck.type";
+
+class KoboldModel implements AiModel {
     model: OpenAI;
     constructor() {
+        const apiUrl = process.env.KOBOLD_API_URL || 'http://localhost:5001/v1';
         this.model = new OpenAI({
-            apiKey: process.env.OPENAI_API_KEY,
+            apiKey:'',
+            baseURL: apiUrl,
         });
     }
     async generateResponse(prompt: string, modelName: string): Promise<string> {
-        return this.model.chat.completions.create({
+        const response = await this.model.chat.completions.create({
             model: modelName,
-            messages: [{ role: 'user', content: prompt }],
-        }).then(completions => {
-            return completions.choices[0].message?.content || '';
+            messages: [
+                {
+                    role: "user",
+                    content: prompt
+                }
+            ]
         });
+        return response.choices[0].message.content || '';
     }
     async generateWithSystemAndUserPrompts(systemPrompt: string, userPrompt: string, modelName: string): Promise<string> {
-        return this.model.chat.completions.create({
+        const response = await this.model.chat.completions.create({
             model: modelName,
-            messages: [{ role: 'user', content: userPrompt }, { role: 'system', content: systemPrompt }],
-        }).then(completions => {
-            return completions.choices[0].message?.content || '';
+            messages: [
+                {
+                    role: "system",
+                    content: systemPrompt
+                },
+                {
+                    role: "user",
+                    content: userPrompt
+                }
+            ]
         });
-    }
-    async getAvailableModels(): Promise<string[]> {
-        const models = await this.model.models.list();
-        return models.data.map(model => model.id);
+        return response.choices[0].message.content || '';
     }
     async getIsAvailable(): Promise<boolean> {
-        return Promise.resolve(!!process.env.OPENAI_API_KEY);
+        return Promise.resolve(!!process.env.KOBOLD_API_URL);
     }
     async getHealth(modelName: string): Promise<HealthCheckResponse> {
-        if (!this.model) {
-            return { status: 'Unhealthy', message: 'Model is not initialized' };
+        if (!process.env.KOBOLD_API_URL) {
+            return { status: 'Unhealthy', message: 'Kobold API URL is not set' };
         }
         try {
             const response = await this.generateResponse(healthCheckPrompt, modelName);
@@ -49,5 +60,4 @@ class OpenAIModel implements AiModel {
         }
     }
 }
-
-export default OpenAIModel;
+export default KoboldModel;

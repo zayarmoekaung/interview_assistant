@@ -1,0 +1,2 @@
+GET http://localhost:3000/api/gethealth?modelType=gemini&modelName=gemini-2.5-flash
+Content-Type: application/json

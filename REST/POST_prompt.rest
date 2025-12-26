@@ -3,8 +3,8 @@ Content-Type: application/json
 
 {
   "model": {
-    "name": "gemini-2.5-flash",
-    "type": "gemini"
+    "name": "mythomax-l2-13b.Q4_K_M.gguf",
+    "type": "local_llm"
   },
   "prompt": "Test Prompt reply with Hello World"
 }

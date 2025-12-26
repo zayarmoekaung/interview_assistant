@@ -1,7 +1,8 @@
 import { AiModel } from "../types/aiModel.types";
 import { GoogleGenerativeAI} from '@google/generative-ai';
 import { makeGetRequest } from "../../axios/request.helper";
-
+import { healthCheckPrompt } from "@/prompts/health_check.prompt";
+import { HealthCheckResponse } from "@/types/healthCheck.type";
 class GeminiModel implements AiModel {
     model: GoogleGenerativeAI;
     constructor() {
@@ -38,6 +39,27 @@ class GeminiModel implements AiModel {
             throw error;
         }
     }
-}
+    getIsAvailable(): Promise<boolean> {
+        return Promise.resolve(!!process.env.GOOGLE_API_KEY);
+    }
+    async getHealth(modelName: string): Promise<HealthCheckResponse> {
+         
+        if (!this.model) {
+            return { status: 'Unhealthy', message: 'Model is not initialized' };
+        }
+        try {
+            const response = await this.generateResponse(healthCheckPrompt, modelName);
+            if (response.trim() === 'Healthy') {
+                return { status: 'Healthy' };
+            } else {
+                return { status: 'Unhealthy', message: `Unexpected response: ${response}` };
+            }
+        } catch (error) {
+            console.error('Error in health check:', error);
+            return { status: 'Unhealthy', message: `Error during health check: ${error}` };
+        }
+    }
+    }
+
 
 export default GeminiModel;

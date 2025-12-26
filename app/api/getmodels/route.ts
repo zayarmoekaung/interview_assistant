@@ -1,5 +1,5 @@
 import { NextResponse, NextRequest } from 'next/server';
-import { createAiModel } from '@/helper/aiModel/aiModel.helper';
+import { createAiModel } from '@/helpers/aiModel/aiModel.helper';
 import { ModelTypeEnum } from '@/types/model.type';
 export async function GET(request: NextRequest) {
     const modelType =  request.nextUrl.searchParams.get('modelType') || '';

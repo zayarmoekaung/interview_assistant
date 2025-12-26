@@ -1,0 +1,1 @@
+export const healthCheckPrompt = `Respond with only "Healthy" to confirm you are functioning correctly.`;

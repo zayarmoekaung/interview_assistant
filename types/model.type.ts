@@ -3,10 +3,12 @@ import { z } from 'zod';
 export enum ModelType {
     GEMINI = 'gemini',
     OPENAI = 'openai',
+    LOCAL  = 'local_llm',
 }
 export const ModelTypeEnum = z.enum([
     ModelType.GEMINI, 
-    ModelType.OPENAI
+    ModelType.OPENAI,
+    ModelType.LOCAL
 ]);
 export const ModelSchema = z.object({
     name: z.string(),

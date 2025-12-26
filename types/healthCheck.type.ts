@@ -1,0 +1,1 @@
+export type HealthCheckResponse = { status: 'Healthy' | 'Unhealthy' , message?: string };
