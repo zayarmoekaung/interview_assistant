@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import {UserPrompt,SystemPrompt} from '@/prompts/resume_review.prompt'
 import { createAiModel } from "@/helpers/aiModel/aiModel.helper";
-import { Model, ModelSchema } from "@/types/model.type";
+import { Model, ModelSchema, ModelType } from "@/types/model.type";
 
 export async function POST(request: NextRequest) {
   const { resume, jobDescription, model } = await request.json();
@@ -20,7 +20,8 @@ export async function POST(request: NextRequest) {
     try {
         const AiModelHelperInstance =  createAiModel(validatedModel.type);
         const systemPrompt = SystemPrompt();
-        const userPrompt = UserPrompt(resume, jobDescription);
+        const mode = validatedModel.type == ModelType.LOCAL ? 'plain' : 'b64'
+        const userPrompt = UserPrompt(resume, jobDescription, mode );
         const response = await AiModelHelperInstance.generateWithSystemAndUserPrompts(systemPrompt, userPrompt, validatedModel.name);
         return NextResponse.json({ response });
     }catch (error: any) {
