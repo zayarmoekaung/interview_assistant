@@ -1,134 +1,121 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# AI Interview Assistant
 
-## Getting Started
 
-First, run the development server:
+## Overview
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+AI Interview Assistant is a web application built with Next.js that helps users prepare for job interviews. It allows switching between AI models (OpenAI's ChatGPT, Google's Gemini, and local LLMs via KoboldCPP) for flexible backend processing. API keys are configured via environment variables. Key features include analyzing a resume against a job description (JD), providing detailed feedback, match percentages across various fields (e.g., skills, experience), generating reports, and printing them. The app incorporates a personality prompt to make AI responses more human-like. Mock interview features are currently in development.
+
+This app uses Chakra UI for a responsive and themeable interface, with support for light/dark modes.
+
+## Features
+
+- **Model Switching**: Seamlessly switch between OpenAI (ChatGPT), Google Gemini, and local LLMs (via KoboldCPP).
+- **Resume-JD Analysis**: Upload or paste JD and resume to get:
+  - Overall match percentage.
+  - Field-specific match percentages (e.g., Skills, Experience, Education, Responsibilities).
+  - Detailed feedback and improvement suggestions.
+- **Report Generation & Printing**: Generate structured reports from analysis and print them directly.
+- **Human-like Responses**: Integrated personality prompts (e.g., Mafuyu style) for more engaging interactions.
+- **Mock Interview (In Development)**: Upcoming features for simulating interview questions and responses.
+- **UI Enhancements**: Chakra UI components, loaders, tooltips, and a menu drawer for navigation.
+
+## Tech Stack
+
+- **Frontend**: Next.js (App Router), React, Chakra UI, TypeScript.
+- **Backend**: Next.js API routes for proxying AI calls.
+- **AI Integrations**:
+  - OpenAI SDK for ChatGPT.
+  - Google Generative AI SDK for Gemini.
+  - OpenAI-compatible endpoint for KoboldCPP local LLMs.
+- **State Management**: Zustand stores (e.g., for JD/resume, models, messages, loading states).
+- **Database**: Prisma ORM (compatible with PostgreSQL or others) – optional, depending on features.
+- **Other**: Axios for HTTP requests, Base64 helpers, JSON sanitization, and custom prompts.
+
+## Installation
+
+1. **Clone the Repository**:
+   ```
+   git clone https://github.com/your-username/ai-interview-assistant.git
+   cd ai-interview-assistant
+   ```
+
+2. **Install Dependencies**:
+   ```
+   npm install
+   ```
+
+3. **Set Up Environment Variables**:
+   Create a `.env.local` file in the root directory and add the following:
+   ```
+   OPENAI_API_KEY=your_openai_key_here
+   GOOGLE_API_KEY=your_google_key_here
+   KOBOLD_API_URL=http://127.0.0.1:5001/v1  # Default for KoboldCPP; adjust as needed
+   GOOGLE_API_DEFAULT_MODEL_NAME=gemini-1.5-flash  # Default Gemini model
+   OPEN_API_DEFAULT_MODEL_NAME=gpt-4o-mini  # Default OpenAI model
+   GOOGLE_API_BASE_URL=https://generativelanguage.googleapis.com  # Base URL for Gemini API
+   DATABASE_URL=your_database_connection_string_here  # e.g., for PostgreSQL (if using DB features)
+   ENCRYPTION_KEY=your_secret_encryption_key_here  # For encrypting data if needed
+   ```
+
+   - Obtain API keys from [OpenAI](https://platform.openai.com/account/api-keys) and [Google AI Studio](https://aistudio.google.com/app/apikey).
+   - For local LLMs, run KoboldCPP separately and provide its API URL.
+
+4. **Set Up Database** (if applicable):
+   ```
+   npx prisma generate
+   npx prisma db push
+   ```
+
+5. **Run the Development Server**:
+   ```
+   npm run dev
+   ```
+   Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+6. **Build for Production**:
+   ```
+   npm run build
+   npm start
+   ```
+
+## Usage
+
+1. **Select Model**: Choose between ChatGPT, Gemini, or Local in the dropdown.
+2. **Resume-JD Analysis**:
+   - Input JD and resume text (or upload files in future updates).
+   - Click "Analyze" to get match percentages, feedback, and a report.
+   - Use the print icon to export the report.
+3. **General Prompting**: Use the chat interface for custom queries.
+4. **REST API Testing**: Use the provided `.rest` files in the `REST` folder for API endpoints like health checks, model listings, and analysis.
+
+### API Endpoints
+
+- **GET /api/gethealth**: Health check with a personality-infused response.
+- **GET /api/getmodels**: List available models for the selected type.
+- **GET /api/getmodeltypes**: List supported model types (e.g., openai, gemini, kobold).
+- **POST /api/analyze**: Analyze resume against JD (body: { jd, resume, model }).
+- **POST /api/prompt**: General prompt handling (body: { prompt, model }).
+
+## Project Structure
+
 ```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
-
-```
-
-interview_assistant
-├─ .next
-│  ├─ dev
-│  │  ├─ build-manifest.json
-│  │  ├─ cache
-│  │  │  └─ .rscinfo
-│  │  ├─ fallback-build-manifest.json
-│  │  ├─ lock
-│  │  ├─ logs
-│  │  │  └─ next-development.log
-│  │  ├─ package.json
-│  │  ├─ prerender-manifest.json
-│  │  ├─ routes-manifest.json
-│  │  ├─ server
-│  │  │  ├─ app
-│  │  │  │  └─ api
-│  │  │  │     ├─ chat
-│  │  │  │     │  ├─ route
-│  │  │  │     │  │  ├─ app-paths-manifest.json
-│  │  │  │     │  │  ├─ build-manifest.json
-│  │  │  │     │  │  └─ server-reference-manifest.json
-│  │  │  │     │  ├─ route.js
-│  │  │  │     │  ├─ route.js.map
-│  │  │  │     │  └─ route_client-reference-manifest.js
-│  │  │  │     ├─ getmodels
-│  │  │  │     │  ├─ route
-│  │  │  │     │  │  ├─ app-paths-manifest.json
-│  │  │  │     │  │  ├─ build-manifest.json
-│  │  │  │     │  │  └─ server-reference-manifest.json
-│  │  │  │     │  ├─ route.js
-│  │  │  │     │  ├─ route.js.map
-│  │  │  │     │  └─ route_client-reference-manifest.js
-│  │  │  │     └─ prompt
-│  │  │  │        ├─ route
-│  │  │  │        │  ├─ app-paths-manifest.json
-│  │  │  │        │  ├─ build-manifest.json
-│  │  │  │        │  └─ server-reference-manifest.json
-│  │  │  │        ├─ route.js
-│  │  │  │        ├─ route.js.map
-│  │  │  │        └─ route_client-reference-manifest.js
-│  │  │  ├─ app-paths-manifest.json
-│  │  │  ├─ chunks
-│  │  │  │  ├─ [root-of-the-server]__017b874e._.js
-│  │  │  │  ├─ [root-of-the-server]__017b874e._.js.map
-│  │  │  │  ├─ [root-of-the-server]__29e3b4c5._.js
-│  │  │  │  ├─ [root-of-the-server]__29e3b4c5._.js.map
-│  │  │  │  ├─ [root-of-the-server]__4e4f28f0._.js
-│  │  │  │  ├─ [root-of-the-server]__4e4f28f0._.js.map
-│  │  │  │  ├─ [root-of-the-server]__5fc5d1c2._.js
-│  │  │  │  ├─ [root-of-the-server]__5fc5d1c2._.js.map
-│  │  │  │  ├─ [root-of-the-server]__cdace7b5._.js
-│  │  │  │  ├─ [root-of-the-server]__cdace7b5._.js.map
-│  │  │  │  ├─ [root-of-the-server]__e20816a2._.js
-│  │  │  │  ├─ [root-of-the-server]__e20816a2._.js.map
-│  │  │  │  ├─ [turbopack]_runtime.js
-│  │  │  │  ├─ [turbopack]_runtime.js.map
-│  │  │  │  ├─ _next-internal_server_app_api_chat_route_actions_ac0c75e3.js
-│  │  │  │  ├─ _next-internal_server_app_api_chat_route_actions_ac0c75e3.js.map
-│  │  │  │  ├─ _next-internal_server_app_api_getmodels_route_actions_747ce989.js
-│  │  │  │  ├─ _next-internal_server_app_api_getmodels_route_actions_747ce989.js.map
-│  │  │  │  ├─ _next-internal_server_app_api_prompt_route_actions_9fe04ca4.js
-│  │  │  │  └─ _next-internal_server_app_api_prompt_route_actions_9fe04ca4.js.map
-│  │  │  ├─ interception-route-rewrite-manifest.js
-│  │  │  ├─ middleware-build-manifest.js
-│  │  │  ├─ middleware-manifest.json
-│  │  │  ├─ next-font-manifest.js
-│  │  │  ├─ next-font-manifest.json
-│  │  │  ├─ pages-manifest.json
-│  │  │  ├─ server-reference-manifest.js
-│  │  │  └─ server-reference-manifest.json
-│  │  ├─ static
-│  │  │  ├─ chunks
-│  │  │  └─ development
-│  │  │     ├─ _buildManifest.js
-│  │  │     ├─ _clientMiddlewareManifest.json
-│  │  │     └─ _ssgManifest.js
-│  │  ├─ trace
-│  │  └─ types
-│  │     ├─ cache-life.d.ts
-│  │     ├─ routes.d.ts
-│  │     └─ validator.ts
-│  └─ types
-│     ├─ cache-life.d.ts
-│     ├─ routes.d.ts
-│     └─ validator.ts
+.
 ├─ README.md
 ├─ REST
+│  ├─ GET_getHealth.rest
+│  ├─ GET_getModelTypes.rest
 │  ├─ GET_getmodels.rest
+│  ├─ POST_analyze_resume.rest
 │  └─ POST_prompt.rest
 ├─ app
 │  ├─ api
+│  │  ├─ analyze
+│  │  │  └─ route.ts
+│  │  ├─ gethealth
+│  │  │  └─ route.ts
 │  │  ├─ getmodels
+│  │  │  └─ route.ts
+│  │  ├─ getmodeltypes
 │  │  │  └─ route.ts
 │  │  └─ prompt
 │  │     └─ route.ts
@@ -136,29 +123,99 @@ interview_assistant
 │  ├─ globals.css
 │  ├─ layout.tsx
 │  └─ page.tsx
+├─ components
+│  ├─ circleProgress.tsx
+│  ├─ icons
+│  │  ├─ analysis.icon.tsx
+│  │  ├─ cycle.icon.tsx
+│  │  ├─ humberger.icon.tsx
+│  │  └─ printer.icon.tsx
+│  ├─ jdResumeInput.tsx
+│  ├─ keywordBlock.tsx
+│  ├─ loader.tsx
+│  ├─ menuDrawer.tsx
+│  ├─ messageView.tsx
+│  ├─ modelSelector.tsx
+│  ├─ navBar.tsx
+│  ├─ resumeMatchResponse.tsx
+│  ├─ tools.tsx
+│  └─ ui
+│     ├─ color-mode.tsx
+│     ├─ provider.tsx
+│     ├─ toaster.tsx
+│     └─ tooltip.tsx
 ├─ eslint.config.mjs
-├─ helper
+├─ helpers
 │  ├─ aiModel
 │  │  ├─ aiModel.helper.ts
-│  │  ├─ class
-│  │  │  ├─ gemini.class.ts
-│  │  │  └─ openAi.class.ts
-│  │  └─ interface
-│  │     └─ aiModel.interface.ts
-│  └─ axios
-│     └─ request.helper.ts
+│  │  ├─ providers
+│  │  │  ├─ gemini.provider.ts
+│  │  │  ├─ kobold.provider.ts
+│  │  │  └─ openAi.provider.ts
+│  │  └─ types
+│  │     └─ aiModel.types.ts
+│  ├─ axios
+│  │  └─ request.helper.ts
+│  ├─ base64.helper.ts
+│  ├─ date.helper.ts
+│  ├─ json.helper.ts
+│  ├─ message
+│  │  ├─ message.helper.ts
+│  │  ├─ providers
+│  │  │  └─ message.provider.ts
+│  │  └─ types
+│  │     └─ message.type.ts
+│  ├─ sanitize.helper.ts
+│  └─ task
+│     ├─ providers
+│     │  └─ task.provider.ts
+│     ├─ task.helper.ts
+│     └─ types
+│        └─ task.type.ts
 ├─ next.config.ts
 ├─ package-lock.json
 ├─ package.json
 ├─ postcss.config.mjs
+├─ prompts
+│  ├─ health_check.prompt.ts
+│  ├─ personalities
+│  │  └─ mafuyu.prompt.ts
+│  └─ resume_review.prompt.ts
 ├─ public
 │  ├─ file.svg
 │  ├─ globe.svg
 │  ├─ next.svg
 │  ├─ vercel.svg
 │  └─ window.svg
+├─ services
+│  ├─ generateAnalysis.service.ts
+│  └─ getAvailableModels.service.ts
+├─ stores
+│  ├─ useJDResumeStore.ts
+│  ├─ useLoadingStore.ts
+│  ├─ useMessageStore.ts
+│  ├─ useModelStore.ts
+│  └─ useResumeAnalysisStore.ts
 ├─ tsconfig.json
-└─ types
-   └─ model.type.ts
-
+├─ types
+│  ├─ healthCheck.type.ts
+│  ├─ keyWordBlock.type.ts
+│  ├─ model.type.ts
+│  └─ resumeMatchResponse.type.ts
+└─ utils
+   └─ api
+      ├─ analyseResume.ts
+      └─ availableModels.ts
 ```
+
+## Contributing
+
+Contributions are welcome! Please fork the repository and submit a pull request. For major changes, open an issue first to discuss.
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+
+---
+
+Built in December 2025. For questions, contact [zayarmoekaung0@gmail.com].
