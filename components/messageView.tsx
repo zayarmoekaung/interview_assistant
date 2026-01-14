@@ -3,7 +3,7 @@ import { useMessageStore } from "@/stores/useMessageStore"
 export const MessageView = () => {
     const { messages, removeMessage } = useMessageStore()
     return (
-        <Stack position={"fixed"} w={"auto"} h={"auto"} bottom={"0px"} float={"left"} padding={"10px"} zIndex={50}>
+        <Stack position={"fixed"} w={"auto"} h={"auto"} maxH={"40vh"} bottom={"0px"} right={"0px"} float={"right"} padding={"10px"} zIndex={50} scrollBehavior={"smooth"} overflow={"scroll"}>
             {messages.map((message) => (
                 <Alert.Root status={message.status} key={message.index}>
                     <Alert.Indicator />

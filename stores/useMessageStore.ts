@@ -4,20 +4,18 @@ import { createMessage } from '@/helpers/message/message.helper'
 
 interface MessageState {
     messages: Message[],
-    addMessage: (status: Status,title: string, message: string) => Message,
+    addMessage: (message: Message) => void,
     removeMessage: (index: number) => void
 }
 
 export const useMessageStore = create<MessageState>((set, get) => ({
     messages: [],
-    addMessage: (status,title, message) => {
+    addMessage: (message) => {
         const messages = get().messages
-        const newMessage = createMessage(status,title, message, messages.length)
-        const updatedMessages = [...messages, newMessage]
+        const updatedMessages = [...messages, message]
         set({
                 messages: updatedMessages
             })
-        return newMessage
     },
     removeMessage: (index) => {
         const messages = get().messages.filter((message: Message)=> message.index !== index)

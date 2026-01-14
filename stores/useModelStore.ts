@@ -1,6 +1,5 @@
 import { create } from "zustand";
 import { ModelType } from "@/types/model.type";
-import { makeGetRequest } from "@/helpers/axios/request.helper";
 import { persist, createJSONStorage } from 'zustand/middleware'
 
 interface ModelState {

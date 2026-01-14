@@ -14,14 +14,14 @@ import {
     Button
 } from "@chakra-ui/react";
 import { useRef } from "react";
-import { CircleProgress } from "./circleProgress";
-import KeywordBlock from "./keywordBlock";
+import { CircleProgress } from "../circleProgress";
+import KeywordBlock from "../keywordBlock";
 import ReactMarkdown from "react-markdown";
 import { useReactToPrint } from "react-to-print";
 import { useResumeAnalysisStore } from "@/stores/useResumeAnalysisStore";
-import Analysis from "./icons/analysis.icon";
+import Analysis from "../icons/analysis.icon";
 import { getTimeStamp, getDateString } from "@/helpers/date.helper";
-import Printer from "./icons/printer.icon";
+import Printer from "../icons/printer.icon";
 
 export const ResumeMatchViewer = () => {
     const { analysisResult } = useResumeAnalysisStore();

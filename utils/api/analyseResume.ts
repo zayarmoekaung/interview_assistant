@@ -14,6 +14,7 @@ export async function analyseResume(model: Model, resume: string, jd: string): P
        jobDescription: encodedJd,
    };
     const response = await makePostRequest("/api/analyze", payload);
+    console.log("Analyse Resume Response:", response);
     const decoded = decodeJsonFromMarkdown(response.response)
     return decoded as ResumeMatchResponse;
 }

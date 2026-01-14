@@ -11,5 +11,6 @@ export interface Message {
     title: string,
     message: string,
     index: number,
+    expired: boolean,
     close: (index: number) => void
 }

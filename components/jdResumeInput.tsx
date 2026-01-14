@@ -2,7 +2,6 @@ import { useRef } from "react";
 import { Button, Card, Field, Stack,Textarea} from "@chakra-ui/react"
 import { useJDResumeStore } from "@/stores/useJDResumeStore";
 import { useModelStore } from "@/stores/useModelStore";
-import { ModelSelector } from "./modelSelector";
 export const JdResumeInput = () => {
     const setJdText = useJDResumeStore((state) => state.setJDText);
     const setResumeText = useJDResumeStore((state) => state.setResumeText);
@@ -42,7 +41,6 @@ export const JdResumeInput = () => {
                     </Stack>
                 </Card.Body>
                 <Card.Footer justifyContent="flex-end">
-                    <ModelSelector />
                     <Button variant="solid" onClick={handleSave} disabled={!isValid()}>Save</Button>
                 </Card.Footer>
             </Card.Root>

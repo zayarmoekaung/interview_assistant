@@ -1,5 +1,4 @@
 import { Task } from "../types/task.type";
-import { useLoadingStore } from "@/stores/useLoadingStore";
 export class TaskProvider implements Task {
     name: string;
     index: number;
@@ -12,8 +11,6 @@ export class TaskProvider implements Task {
     }
 
     stop() {
-        const removeTask = useLoadingStore.getState().removeTask;
         this.isLoading = false;
-        removeTask(this.index);
     }
 }

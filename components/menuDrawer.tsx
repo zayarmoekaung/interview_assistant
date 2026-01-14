@@ -1,6 +1,7 @@
 import { IconButton, Button, CloseButton, Drawer, Portal, Flex, Textarea, Field } from "@chakra-ui/react";
 import { useJDResumeStore } from "@/stores/useJDResumeStore";
 import Humberger from "./icons/humberger.icon";
+import { JdResumeInput } from "./jdResumeInput";
 import { useRef } from "react";
 export const MenuDrawer = () => {
     const { jdText, resumeText, setJDText, setResumeText } = useJDResumeStore();

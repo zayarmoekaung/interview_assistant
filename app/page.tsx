@@ -4,8 +4,8 @@ import { useJDResumeStore } from "@/stores/useJDResumeStore";
 import { Loader } from "@/components/loader";
 import { NavBar } from "@/components/navBar";
 import { JdResumeInput } from "@/components/jdResumeInput";
-import { ResumeMatchViewer } from "@/components/resumeMatchResponse";
-import { Tools } from "@/components/tools";
+import { MainView } from "@/components/views";
+import { Tools } from "@/components/toolsBar";
 import { MessageView } from "@/components/messageView";
 export default function Home() {
   const isLoading = useLoadingStore((state) => state.isLoading);
@@ -15,7 +15,7 @@ export default function Home() {
       {isLoading && <Loader />}
       <NavBar />
       { (!jdText || !resumeText) && <JdResumeInput /> }
-      <ResumeMatchViewer />
+      <MainView/>
       <Tools/>
       <MessageView/>
     </div>

@@ -17,6 +17,7 @@ export const SystemPrompt = (): string => {
 - general_feedback: String (overall advice on how to improve the resume for this JD Formatted in Markdown).
 
 Base percentages on keyword overlap, skill relevance, experience alignment, and qualitative fit. Be objective, constructive, and specific. Use the resume's content to highlight examples.
+Output only the JSON object, without any leading greetings, additional text, explanations, or other content. Do not include or repeat any part of this prompt in the response.
 `;
 }
 

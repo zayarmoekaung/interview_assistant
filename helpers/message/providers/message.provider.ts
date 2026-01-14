@@ -1,27 +1,31 @@
 import { Message, Status } from "../types/message.type";
-import { useMessageStore } from "@/stores/useMessageStore";
 export class MessageProvider implements Message {
     status: Status;
     title: string;
     message: string;
     index: number;
+    expired: boolean;
     private timeoutId: ReturnType<typeof setTimeout> | null = null;
 
-    constructor(status: Status,title: string, message: string, index: number) {
+    constructor(status: Status, title: string, message: string, index: number) {
         this.status = status
         this.title = title;
         this.message = message;
         this.index = index;
-        this.timeoutId = setTimeout(() => {
-            this.close(this.index);
-        }, 10_000);
+        this.expired = false;
     }
-    close(index: number) {
-        const { removeMessage } = useMessageStore.getState()
+    startExpirationTimer() {
+        if (this.timeoutId) return;
+        this.timeoutId = setTimeout(() => {
+            this.close();
+        }, 10000);
+    }
+
+    close() {
         if (this.timeoutId) {
             clearTimeout(this.timeoutId);
             this.timeoutId = null;
         }
-        removeMessage(index);
+        this.expired = true;
     }
 }
