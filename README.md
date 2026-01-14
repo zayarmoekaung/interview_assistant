@@ -1,4 +1,5 @@
 # AI Interview Assistant
+<img width="1306" height="648" alt="Screenshot from 2025-12-27 14-10-54" src="https://github.com/user-attachments/assets/a3d6459e-f12c-45a0-a32e-5d8b39de745d" />
 
 
 ## Overview
@@ -217,5 +218,6 @@ Contributions are welcome! Please fork the repository and submit a pull request.
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
 ---
+
 
 Built in December 2025. For questions, contact [zayarmoekaung0@gmail.com].
