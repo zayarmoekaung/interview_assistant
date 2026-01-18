@@ -1,6 +1,6 @@
 import { AiModel } from "../types/aiModel.types";
 import { GoogleGenerativeAI} from '@google/generative-ai';
-import { makeGetRequest } from "../../axios/request.helper";
+import { makeGetRequest } from "@/helpers/axios/request.helper";
 import { healthCheckPrompt } from "@/prompts/health_check.prompt";
 import { HealthCheckResponse } from "@/types/healthCheck.type";
 class GeminiModel implements AiModel {

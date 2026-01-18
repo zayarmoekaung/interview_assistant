@@ -5,7 +5,7 @@ import { analyseResume } from "@/utils/api/analyseResume";
 
 import { ResumeMatchResponseSchema } from "@/types/resumeMatchResponse.type";
 import { ModelType } from "@/types/model.type";
-import { Status } from "@/helpers/message/types/message.type";
+import { Status } from "@/factories/message";
 import { createMessage } from "@/helpers/message/message.helper";
 import { createTask } from "@/helpers/task/task.helper";
 export async function generateAnalysis() {

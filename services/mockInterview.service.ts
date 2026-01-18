@@ -5,7 +5,7 @@ import { interviewGreeting } from "@/utils/api/interviewGreeting";
 import { useMockInterviewStore } from "@/stores/useMockInterviewStore";
 import { GreetingMatchSchema } from "@/types/interviewResponse.type";
 import { ModelType } from "@/types/model.type";
-import { Status } from "@/helpers/message/types/message.type";
+import { Status } from "@/factories/message";
 import { createMessage } from "@/helpers/message/message.helper";
 import { createTask } from "@/helpers/task/task.helper";
 

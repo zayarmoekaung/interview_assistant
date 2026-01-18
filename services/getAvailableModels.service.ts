@@ -2,7 +2,7 @@ import { availableModels } from "@/utils/api/availableModels";
 import { useModelStore } from "@/stores/useModelStore";
 import { createMessage } from "@/helpers/message/message.helper";
 import { createTask } from "@/helpers/task/task.helper";
-import { Status } from "@/helpers/message/types/message.type";
+import { Status } from "@/factories/message";
 
 export async function getAvailabelModels(){
     const { setModels } = useModelStore.getState();

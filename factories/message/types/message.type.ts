@@ -1,8 +1,8 @@
 export enum Status {
     SUCCESS = 'success',
-    INFO    = 'info',
+    INFO = 'info',
     WARNING = 'warning',
-    ERROR   = 'error',
+    ERROR = 'error',
     NEUTRAL = 'neutral'
 
 }
@@ -12,5 +12,6 @@ export interface Message {
     message: string,
     index: number,
     expired: boolean,
+    startExpirationTimer: () => void,
     close: (index: number) => void
 }
