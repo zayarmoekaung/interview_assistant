@@ -1,5 +1,5 @@
 import {create} from "zustand";
-import { Task } from "@/helpers/task/types/task.type";
+import { Task } from "@/factories/task/types/task.type";
 
 interface LoadingState {
   tasks: Task[];

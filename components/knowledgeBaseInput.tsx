@@ -1,10 +1,10 @@
 import { useRef } from "react";
 import { Button, Card, Field, Stack,Textarea} from "@chakra-ui/react"
-import { useJDResumeStore } from "@/stores/useJDResumeStore";
+import { useKnowledgeBaseStore } from "@/stores/useKnowledgeBaseStore";
 import { useModelStore } from "@/stores/useModelStore";
-export const JdResumeInput = () => {
-    const setJdText = useJDResumeStore((state) => state.setJDText);
-    const setResumeText = useJDResumeStore((state) => state.setResumeText);
+export const KnowledgeBaseInput = () => {
+    const setJdText = useKnowledgeBaseStore((state) => state.setJDText);
+    const setResumeText = useKnowledgeBaseStore((state) => state.setResumeText);
     const selectedModel = useModelStore((state) => state.selectedModel);
     const jdRef = useRef<HTMLTextAreaElement>(null);
     const resumeRef = useRef<HTMLTextAreaElement>(null);

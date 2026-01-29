@@ -1,5 +1,6 @@
 import { useModelStore } from "@/stores/useModelStore";
-import { useJDResumeStore } from "@/stores/useJDResumeStore";
+import { useKnowledgeBaseStore } from "@/stores/useKnowledgeBaseStore";
+import { useVersionStore } from "@/stores/useVersionStore";
 import { useResumeAnalysisStore } from "@/stores/useResumeAnalysisStore";
 import { interviewGreeting } from "@/utils/api/interviewGreeting";
 import { useMockInterviewStore } from "@/stores/useMockInterviewStore";
@@ -11,7 +12,8 @@ import { createTask } from "@/helpers/task/task.helper";
 
 export async function generateGreeting() {
     const { selectedModel } = useModelStore.getState();
-    const { jdText} = useJDResumeStore.getState();
+    const { jdText} = useKnowledgeBaseStore.getState();
+    const { kb_version } = useVersionStore.getState();
     const { analysisResult } = useResumeAnalysisStore.getState();
     const { setGreeting } = useMockInterviewStore.getState();
     const modelnames = {
@@ -31,6 +33,7 @@ export async function generateGreeting() {
             throw new Error("Job Description or Resume text is missing.");
         }
         const greeting = await interviewGreeting( model,candidatename,position,jdText)
+        greeting.kb_version = kb_version ? kb_version : 101;
         const parsedGreeting = GreetingMatchSchema.safeParse(greeting);
         if (!parsedGreeting.success) {
             createMessage(Status.ERROR, 'Error pursing greeting', 'AI model responsed invalid format');

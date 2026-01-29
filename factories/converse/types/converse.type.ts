@@ -1,9 +1,9 @@
 
 export interface Converse {
-    id: string;
+    id: number;
     text: string;
     isOutgoing: boolean;
     isLoading: boolean;
-    timestamp?: string;
-    makeConverse: ()=> void;
+    timestamp?: number;
+    makeConverse: (text: string)=> void;
 }

@@ -7,17 +7,19 @@ export const InterviewConversationViewer = () => {
     const greeting = useMockInterviewStore((state)=> state.greeting);
     const handleGreetingAction = () => {
         generateGreeting();
-        console.log("Pressed");
     }
     return (
             <Flex h="full" w="full" align="center" justify="center" direction={"column"} padding={"5vw"}>
                {greeting &&
+                <>
                <Greeting 
                    avatarSrc={mafuyu.src}
                    greetingText={greeting.message}
                    buttonText={"Start Mock Interview"}
                    onButtonClick={handleGreetingAction}
-               />}
+               />
+               </>
+               }
             </Flex>
     )
 }

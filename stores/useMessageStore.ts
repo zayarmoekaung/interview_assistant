@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import { Message, Status } from '@/helpers/message/types/message.type'
+import { Message, Status } from '@/factories/message/types/message.type'
 import { createMessage } from '@/helpers/message/message.helper'
 
 interface MessageState {

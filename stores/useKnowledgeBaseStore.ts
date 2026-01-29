@@ -1,14 +1,14 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from 'zustand/middleware'
-interface JDResumeState {
+interface KnowledgeBaseState {
     jdText: string;
     resumeText: string;
     setJDText: (text: string) => void;
     setResumeText: (text: string) => void;
 }
 
-export const useJDResumeStore = create(
-    persist<JDResumeState>(
+export const useKnowledgeBaseStore = create(
+    persist<KnowledgeBaseState>(
         (set) => ({
             jdText: "",
             resumeText: "",

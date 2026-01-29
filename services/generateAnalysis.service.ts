@@ -1,6 +1,6 @@
 import { useModelStore } from "@/stores/useModelStore";
 import { useResumeAnalysisStore } from "@/stores/useResumeAnalysisStore";
-import { useJDResumeStore } from "@/stores/useJDResumeStore";
+import { useKnowledgeBaseStore } from "@/stores/useKnowledgeBaseStore";
 import { analyseResume } from "@/utils/api/analyseResume";
 
 import { ResumeMatchResponseSchema } from "@/types/resumeMatchResponse.type";
@@ -10,7 +10,7 @@ import { createMessage } from "@/helpers/message/message.helper";
 import { createTask } from "@/helpers/task/task.helper";
 export async function generateAnalysis() {
     const { selectedModel } = useModelStore.getState();
-    const { jdText, resumeText } = useJDResumeStore.getState();
+    const { jdText, resumeText } = useKnowledgeBaseStore.getState();
     const { setAnalysisResult } = useResumeAnalysisStore.getState();
     const modelnames = {
         [ModelType.GEMINI]: "gemini-2.5-flash",

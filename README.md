@@ -131,7 +131,7 @@ This app uses Chakra UI for a responsive and themeable interface, with support f
 │  │  ├─ cycle.icon.tsx
 │  │  ├─ humberger.icon.tsx
 │  │  └─ printer.icon.tsx
-│  ├─ jdResumeInput.tsx
+│  ├─ KnowledgeBaseInput.tsx
 │  ├─ keywordBlock.tsx
 │  ├─ loader.tsx
 │  ├─ menuDrawer.tsx
@@ -192,7 +192,7 @@ This app uses Chakra UI for a responsive and themeable interface, with support f
 │  ├─ generateAnalysis.service.ts
 │  └─ getAvailableModels.service.ts
 ├─ stores
-│  ├─ useJDResumeStore.ts
+│  ├─ useKnowledgeBaseStore.ts
 │  ├─ useLoadingStore.ts
 │  ├─ useMessageStore.ts
 │  ├─ useModelStore.ts

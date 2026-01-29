@@ -1,6 +1,7 @@
 import { useModeStore } from "@/stores/useModeStore";
 import { useMockInterviewStore } from "@/stores/useMockInterviewStore";
 import { generateGreeting } from "@/services/mockInterview.service";
+import { isUptodate } from "@/helpers/kb_version.helper";
 import { Modes } from "@/types/mode.type";
 import { Button, Box } from "@chakra-ui/react";
 import { MotionFlex } from "../animations";
@@ -12,7 +13,7 @@ export const InterviewMode = () => {
     const { greeting } = useMockInterviewStore();
     const handleModeSwitch = () => {
         switchMode(Modes.INTERVIEW)
-        if (!greeting) {
+        if (!greeting || !isUptodate(greeting.kb_version)) {
             generateGreeting();
         }
     }

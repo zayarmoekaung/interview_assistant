@@ -10,6 +10,7 @@ export const useMockInterviewStore = create(
     persist<MockInterviewState>(
         (set)=>(
             {
+                version: null,
                 greeting: null,
                 setGreeting: (greeting)=> set({greeting})
             }

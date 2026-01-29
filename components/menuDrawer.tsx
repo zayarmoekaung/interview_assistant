@@ -1,10 +1,11 @@
 import { IconButton, Button, CloseButton, Drawer, Portal, Flex, Textarea, Field } from "@chakra-ui/react";
-import { useJDResumeStore } from "@/stores/useJDResumeStore";
+import { useKnowledgeBaseStore } from "@/stores/useKnowledgeBaseStore";
+import { useVersionStore } from "@/stores/useVersionStore";
 import Humberger from "./icons/humberger.icon";
-import { JdResumeInput } from "./jdResumeInput";
 import { useRef } from "react";
 export const MenuDrawer = () => {
-    const { jdText, resumeText, setJDText, setResumeText } = useJDResumeStore();
+    const { jdText, resumeText, setJDText, setResumeText } = useKnowledgeBaseStore();
+    const { kb_version } = useVersionStore();
     const jdRef = useRef<HTMLTextAreaElement>(null);
     const resumeRef = useRef<HTMLTextAreaElement>(null);
     const handleSave = () => {
@@ -28,6 +29,7 @@ export const MenuDrawer = () => {
                     <Drawer.Content>
                         <Drawer.Header>
                             <Drawer.Title>Data Set</Drawer.Title>
+                            <i>kb version - { kb_version }</i>
                         </Drawer.Header>
                         <Drawer.Body>
                             <Flex direction="column" gap="4" marginBottom="10px">
