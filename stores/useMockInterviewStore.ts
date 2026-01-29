@@ -4,7 +4,7 @@ import { persist, createJSONStorage } from "zustand/middleware"
 
 interface MockInterviewState {
     greeting: Greeting | null
-    setGreeting: (greeting: Greeting) => void
+    setGreeting: (greeting: Greeting | null ) => void
 }
 export const useMockInterviewStore = create(
     persist<MockInterviewState>(
