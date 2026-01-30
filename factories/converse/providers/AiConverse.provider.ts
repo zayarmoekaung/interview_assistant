@@ -1,22 +1,21 @@
 import { Converse } from "../types/converse.type";
+import { InterviewNote } from "@/types/interviewNote.type";
 import { getTimeStamp } from "@/helpers/time.helper";
 
-export class ConverseProvider implements Converse {
+
+export class AiConverseProvider implements Converse {
     id: number;
+    note: InterviewNote | null;
     text: string ;
     isOutgoing: boolean;
-    isLoading: boolean;
     timestamp?: number | undefined;
 
-    constructor(id: number,isOutgoing: boolean){
+    constructor(id: number,note: InterviewNote){
         this.id = id;
-        this.isOutgoing = isOutgoing;
+        this.isOutgoing = false;
+        this.note = note;
         this.text = "";
-        this.isLoading = true;
         this.timestamp = getTimeStamp();
     }
 
-    makeConverse(text: string){
-        this.text = text;
-    }
 }

@@ -6,8 +6,8 @@ import { persist, createJSONStorage } from 'zustand/middleware'
 interface ConversationState {
     conversation : Converse[],
     addConverse: (converse: Converse) => void,
-    removeConverse: (index: number) => void
-}
+    removeConverse: (index: number) => void,
+    clearConversation: () => void}
 export const ConversationStore = create(
     persist<ConversationState>(
         (set,get) => ({
@@ -26,7 +26,8 @@ export const ConversationStore = create(
                 set({
                     conversation
                 })
-            }
+            },
+            clearConversation: () => set({ conversation: [] })
         }),
         {
             name: "conversation-storage",

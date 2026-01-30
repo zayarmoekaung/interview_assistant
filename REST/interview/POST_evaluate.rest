@@ -1,0 +1,11 @@
+POST http://localhost:3000/api/interview/evaluate
+Content-Type: application/json
+
+{
+  "model": {
+    "name": "gemini-2.5-flash",
+    "type": "gemini"
+  },
+  "question": "Can you walk me through a project where you used TensorFlow to build a predictive model? What challenges did you face in data preprocessing?",
+  "answer": "Yes, in my previous role, I worked on a project to predict customer churn using TensorFlow. We used a recurrent neural network. The biggest challenge in data preprocessing was handling imbalanced data and dealing with missing values in customer interaction logs. We used SMOTE for oversampling and imputation for missing values."
+}

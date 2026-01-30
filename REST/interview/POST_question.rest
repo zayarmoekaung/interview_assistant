@@ -1,0 +1,13 @@
+POST http://localhost:3000/api/interview/question
+Content-Type: application/json
+
+{
+  "model": {
+    "name": "gemini-2.5-flash",
+    "type": "gemini"
+  },
+  "interviewNote": {
+    "category": "Technical Skills",
+    "note": "Proficiency in Python and machine learning libraries like TensorFlow, with 3 years of experience building predictive models."
+  }
+}

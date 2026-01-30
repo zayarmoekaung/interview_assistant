@@ -2,11 +2,13 @@ import { useModeStore } from "@/stores/useModeStore";
 import { useMockInterviewStore } from "@/stores/useMockInterviewStore";
 import { generateGreeting } from "@/services/mockInterview.service";
 import { isUptodate } from "@/helpers/kb_version.helper";
+import { restartConversation } from "@/helpers/conversation/conversation.helper";
 import { Modes } from "@/types/mode.type";
 import { Button, Box } from "@chakra-ui/react";
 import { MotionFlex } from "../animations";
 import { Tooltip } from "@/components/ui/tooltip"
 import { ChatInput } from "../chatInput";
+
 import Chat from "../icons/chat.icon";
 export const InterviewMode = () => {
     const { globalMode, switchMode } = useModeStore()
@@ -50,7 +52,9 @@ export const InterviewMode = () => {
                     </Tooltip>
                 </MotionFlex>
                 :
+                <>
                 <ChatInput onSend={handleSend} />
+                </>
             }
         </MotionFlex>
     );
