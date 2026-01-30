@@ -5,9 +5,4 @@ export const InterviewQuestionSchema = z.object({
     probes: z.array(z.string()),
 });
 
-export const InterviewQuestionResponseSchema = z.object({
-    question: InterviewQuestionSchema,
-});
-
 export type InterviewQuestion = z.infer<typeof InterviewQuestionSchema>;
-export type InterviewQuestionResponse = z.infer<typeof InterviewQuestionResponseSchema>;
