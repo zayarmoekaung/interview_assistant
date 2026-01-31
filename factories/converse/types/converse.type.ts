@@ -5,4 +5,5 @@ export interface Converse {
     isOutgoing: boolean;
     note?: InterviewNote | null;
     timestamp?: number;
+    updateText?: (newText: string) => void; // Made optional for now, will be implemented where Converse objects are created
 }

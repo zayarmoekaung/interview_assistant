@@ -3,7 +3,7 @@ import { ConversationStore } from "@/stores/useConversationStore";
 import { useKnowledgeBaseStore } from "@/stores/useKnowledgeBaseStore";
 import { useMockInterviewStore } from "@/stores/useMockInterviewStore";
 import { InterviewNote } from "@/types/interviewNote.type";
-import { generateAndSetInterviewNotes, generateInterviewQuestion } from "@/services/mockInterview.service";
+import { generateAndSetInterviewNotes } from "@/services/mockInterview.service";
 import { createMessage } from "@/helpers/message/message.helper";
 import { Status } from "@/factories/message";
 
