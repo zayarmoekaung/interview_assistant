@@ -4,34 +4,42 @@ import { Converse } from "@/factories/converse/types/converse.type"
 import { persist, createJSONStorage } from 'zustand/middleware'
 
 interface ConversationState {
-    conversation : Converse[],
-    addConverse: (converse: Converse) => void,
-    removeConverse: (index: number) => void,
-    clearConversation: () => void}
+    conversation: Converse[];
+    addConverse: (converse: Converse) => void;
+    removeConverse: (id: number) => void;
+    clearConversation: () => void;
+    updateConverseText: (id: number, newText: string) => void;
+}
+
 export const ConversationStore = create(
     persist<ConversationState>(
-        (set,get) => ({
+        (set, get) => ({
             conversation: [],
-            addConverse: ( converse: Converse) => {
+            addConverse: (converse: Converse) => {
                 const conversation = get().conversation;
-                const newConversation = [...conversation,converse]
-                set(
-                    {
-                        conversation: newConversation
-                    }
-                )
-            },
-            removeConverse: (index: number) => {
-                const conversation = get().conversation.filter((converse: Converse)=>converse.id !== index)
+                const newConversation = [...conversation, converse];
                 set({
-                    conversation
-                })
+                    conversation: newConversation,
+                });
             },
-            clearConversation: () => set({ conversation: [] })
+            removeConverse: (id: number) => {
+                const conversation = get().conversation.filter((converse: Converse) => converse.id !== id);
+                set({
+                    conversation,
+                });
+            },
+            clearConversation: () => set({ conversation: [] }),
+            updateConverseText: (id: number, newText: string) => {
+                set((state) => ({
+                    conversation: state.conversation.map((c) =>
+                        c.id === id ? { ...c, text: newText } : c
+                    ),
+                }));
+            },
         }),
         {
             name: "conversation-storage",
-            storage: createJSONStorage(()=>localStorage)
+            storage: createJSONStorage(() => localStorage),
         }
     )
-)
+);

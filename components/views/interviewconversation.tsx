@@ -8,10 +8,9 @@ import { initializeConversation } from "@/helpers/conversation/conversation.help
 export const InterviewConversationViewer = () => {
     const { greeting, conversationStarted, setConversationStarted } = useMockInterviewStore((state)=> state);
     const handleGreetingAction = async () => {
-        const { setGreeting, setConversationStarted } = useMockInterviewStore.getState();
+        const { setConversationStarted } = useMockInterviewStore.getState();
         try {
             await initializeConversation();
-            setGreeting(null); 
             setConversationStarted(true); 
         } catch (error) {
             console.error("Failed to initialize conversation:", error);
@@ -20,7 +19,7 @@ export const InterviewConversationViewer = () => {
 
     return (
             <Flex h="full" w="full" align="center" justify="center" direction={"column"} padding={"5vw"}>
-               {(greeting) ? (
+               {(greeting && !conversationStarted) ? (
                 <Greeting 
                    avatarSrc={mafuyu.src}
                    greetingText={greeting.message}

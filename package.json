@@ -10,8 +10,10 @@
   },
   "dependencies": {
     "@chakra-ui/react": "^3.30.0",
+    "@elevenlabs/elevenlabs-js": "^2.33.0",
     "@google/generative-ai": "^0.24.1",
     "axios": "^1.13.2",
+    "date-fns": "^4.1.0",
     "framer-motion": "^12.23.26",
     "install": "^0.13.0",
     "next": "16.0.10",

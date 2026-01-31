@@ -1,9 +1,12 @@
-export function getTimeStamp():number{
-    const timestampInMilliseconds = new Date().valueOf();
-    return timestampInMilliseconds
-}
-export function getDateString():string{
-    const today = new Date();
-    const formattedDate = today.toLocaleDateString('en-GB'); 
-    return formattedDate;
-}
+import { format } from 'date-fns';
+
+export const formatTimestamp = (timestamp: number | undefined): string => {
+    if (!timestamp) {
+        return '';
+    }
+    return format(new Date(timestamp), 'h:mm a - MMM d, yyyy');
+};
+
+export const getDateString = (): string => {
+    return format(new Date(), 'dd/MM/yyyy');
+};

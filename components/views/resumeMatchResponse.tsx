@@ -20,7 +20,8 @@ import ReactMarkdown from "react-markdown";
 import { useReactToPrint } from "react-to-print";
 import { useResumeAnalysisStore } from "@/stores/useResumeAnalysisStore";
 import Analysis from "../icons/analysis.icon";
-import { getTimeStamp, getDateString } from "@/helpers/date.helper";
+import { getDateString } from "@/helpers/date.helper";
+import { getTimeStamp } from "@/helpers/time.helper";
 import Printer from "../icons/printer.icon";
 
 export const ResumeMatchViewer = () => {
