@@ -221,3 +221,7 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 
 
 Built in December 2025. For questions, contact [zayarmoekaung0@gmail.com].
+
+### Project Purpose
+
+This project aims to provide an AI-powered interview assistant to help users prepare for interviews.
