@@ -4,6 +4,8 @@ export interface Converse {
     text: string;
     isOutgoing: boolean;
     note?: InterviewNote | null;
+    repliedTo?: number;
     timestamp?: number;
     updateText?: (newText: string) => void; 
+    playAudio?: () => void;
 }

@@ -16,7 +16,7 @@ export const ChatInput = ({ onSend }: ChatInputProps) => {
     const [value, setValue] = useState("");
     const textareaRef = useRef<HTMLTextAreaElement | null>(null);
 
-    const maxHeight = 160; // px
+    const maxHeight = 160; 
 
     useEffect(() => {
         const el = textareaRef.current;

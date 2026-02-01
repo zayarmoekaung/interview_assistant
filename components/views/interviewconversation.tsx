@@ -6,12 +6,10 @@ import { ConversationBubbles } from "@/components/conversation/ConversationBubbl
 import { initializeConversation } from "@/helpers/conversation/conversation.helper"
 
 export const InterviewConversationViewer = () => {
-    const { greeting, conversationStarted, setConversationStarted } = useMockInterviewStore((state)=> state);
+    const { greeting, conversationStarted} = useMockInterviewStore((state)=> state);
     const handleGreetingAction = async () => {
-        const { setConversationStarted } = useMockInterviewStore.getState();
         try {
             await initializeConversation();
-            setConversationStarted(true); 
         } catch (error) {
             console.error("Failed to initialize conversation:", error);
         }

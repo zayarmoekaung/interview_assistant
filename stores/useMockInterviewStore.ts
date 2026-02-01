@@ -4,9 +4,11 @@ import { persist, createJSONStorage } from "zustand/middleware"
 
 interface MockInterviewState {
     greeting: Greeting | null
-    setGreeting: (greeting: Greeting | null ) => void
+    audioBlob: Blob | null
     conversationStarted: boolean
+    setGreeting: (greeting: Greeting | null ) => void
     setConversationStarted: (started: boolean) => void
+    setAudioBlob: (audioBlob: Blob) => void
 }
 export const useMockInterviewStore = create(
     persist<MockInterviewState>(
@@ -14,8 +16,10 @@ export const useMockInterviewStore = create(
             {
                 version: null,
                 greeting: null,
-                setGreeting: (greeting)=> set({greeting}),
+                audioBlob: null,
                 conversationStarted: false,
+                setGreeting: (greeting)=> set({greeting}),
+                setAudioBlob: (audioBlob)=>set({audioBlob}),
                 setConversationStarted: (started) => set({ conversationStarted: started }),
             }
         ),

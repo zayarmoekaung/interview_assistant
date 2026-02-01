@@ -17,7 +17,7 @@ export const KnowledgeBaseInput = () => {
         }
     }
     const isValid = () => {
-        return jdRef.current?.value.trim().length! > 0 && resumeRef.current?.value.trim().length! > 0 && selectedModel;
+        return jdRef.current?.value.trim().length! > 0 && resumeRef.current?.value.trim().length! > 0;
     }
     return (
         <div className="flex items-center justify-center z-500  backdrop-blur-sm backdrop-brightness-75 fixed top-0 left-0 w-full h-full background-black overflow-auto">
