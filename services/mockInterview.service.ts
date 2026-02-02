@@ -17,6 +17,9 @@ import { InterviewNote } from "@/types/interviewNote.type";
 
 import { getInterviewNotes } from "@/utils/api/getInterviewNotes";
 import { useInterviewNoteStore } from "@/stores/useInterviewNoteStore";
+import { AnswerEvaluation, AnswerEvaluationSchema } from "@/types/answerEvaluation.type";
+import { getAnswerEvaluation } from "@/utils/api/getAnswerEvaluation";
+import { parseResponse } from "openai/lib/ResponsesParser.mjs";
 
 export async function generateAndSetInterviewNotes(jdText: string, resumeText: string): Promise<InterviewNote[] | null> {
     const { selectedModel } = useModelStore.getState();
@@ -83,7 +86,7 @@ export async function generateInterviewQuestion(interviewNote: InterviewNote): P
 
 export async function generateGreeting() {
     const { selectedModel } = useModelStore.getState();
-    const { jdText} = useKnowledgeBaseStore.getState();
+    const { jdText } = useKnowledgeBaseStore.getState();
     const { kb_version } = useVersionStore.getState();
     const { analysisResult } = useResumeAnalysisStore.getState();
     const { setGreeting } = useMockInterviewStore.getState();
@@ -100,10 +103,10 @@ export async function generateGreeting() {
         type: selectedModel
     }
     try {
-         if (!jdText) {
+        if (!jdText) {
             throw new Error("Job Description or Resume text is missing.");
         }
-        const greeting = await interviewGreeting( model,candidatename,position,jdText)
+        const greeting = await interviewGreeting(model, candidatename, position, jdText)
         greeting.kb_version = kb_version ? kb_version : 101;
         const parsedGreeting = GreetingMatchSchema.safeParse(greeting);
         if (!parsedGreeting.success) {
@@ -112,9 +115,52 @@ export async function generateGreeting() {
         setGreeting(greeting);
         loading.stop();
     } catch (error) {
-        createMessage(Status.ERROR,"Error generating greeting",error instanceof Error ? error.message : String(error));
-    }finally{
+        createMessage(Status.ERROR, "Error generating greeting", error instanceof Error ? error.message : String(error));
+    } finally {
         loading.stop();
     }
+}
 
+export async function evaluateAnswer(
+    questionText: string,
+    answerText: string,
+    questionId: number,
+    answerId: number
+): Promise<AnswerEvaluation | null> {
+    const { selectedModel } = useModelStore.getState();
+    const modelnames = {
+        [ModelType.GEMINI]: "gemini-2.5-flash",
+        [ModelType.OPENAI]: "gpt-4",
+        [ModelType.LOCAL]: "mythomax-l2-13b.Q4_K_M.gguf"
+    };
+    const model = {
+        name: modelnames[selectedModel],
+        type: selectedModel
+    };
+    const loading = createTask("Evaluating Answer");
+    try {
+        const response = await getAnswerEvaluation(model, questionText, answerText);
+        const parsedResponse = AnswerEvaluationSchema.safeParse(response);
+        if (!parsedResponse.success) {
+            createMessage(Status.ERROR, 'Error pursing Evaluation', 'AI model responsed invalid format');
+        }
+        const evaluationResponse = parsedResponse.data;
+        const evaluation: AnswerEvaluation = {
+            questionId: questionId,
+            answerId: answerId,
+            questionText: questionText,
+            answerText: answerText,
+            generalFeedback: evaluationResponse?.generalFeedback || "No general feedback.",
+            detailedFeedback: evaluationResponse?.detailedFeedback || "No detailed feedback.",
+            scores: evaluationResponse?.scores,
+            remarks: evaluationResponse?.remarks,
+        };
+
+        return evaluation;
+    } catch (error) {
+        createMessage(Status.ERROR, "Error evaluating answer", error instanceof Error ? error.message : String(error));
+        return null;
+    } finally {
+        loading.stop();
+    }
 }

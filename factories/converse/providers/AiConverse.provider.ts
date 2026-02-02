@@ -16,7 +16,7 @@ export class AiConverseProvider implements Converse {
         this.id = id;
         this.isOutgoing = false;
         this.note = note;
-        this.text = "";
+        this.text = note.category === "Feedback" ? note.note : ""; 
         this.timestamp = getTimeStamp();
         this.repliedTo = repliedTo;
     }
