@@ -1,10 +1,10 @@
 import z from "zod";
 
 export const AnswerEvaluationSchema = z.object({
-    questionId: z.number(),
-    answerId: z.number(),
-    questionText: z.string(),
-    answerText: z.string(),
+    questionId: z.number().optional(),
+    answerId: z.number().optional(),
+    questionText: z.string().optional(),
+    answerText: z.string().optional(),
     generalFeedback: z.string(),
     detailedFeedback: z.string(),
     scores: z.object({

@@ -3,13 +3,16 @@ import { InterviewNote } from '@/types/interviewNote.type'
 
 interface InterviewNoteState {
     interviewNotes: InterviewNote[],
+    currentNoteIndex:number, 
     addInterviewNote: (note: InterviewNote) => void,
     removeInterviewNote: (index: number) => void,
     setInterviewNotes: (notes: InterviewNote[]) => void,
+    setCurrentNoteIndex: (currentNoteIndex: number)=> void
 }
 
 export const useInterviewNoteStore = create<InterviewNoteState>((set, get) => ({
     interviewNotes: [],
+    currentNoteIndex: 0,
     addInterviewNote: (note) => {
         const notes = get().interviewNotes
         const updatedNotes = [...notes, note]
@@ -26,6 +29,11 @@ export const useInterviewNoteStore = create<InterviewNoteState>((set, get) => ({
     setInterviewNotes: (notes) => {
         set({
             interviewNotes: notes
+        })
+    },
+    setCurrentNoteIndex(currentNoteIndex) {
+        set({
+            currentNoteIndex
         })
     },
 }))

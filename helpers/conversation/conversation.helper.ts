@@ -11,22 +11,20 @@ import { Status } from "@/factories/message";
 import { useInterviewNoteStore } from "@/stores/useInterviewNoteStore"; // New import
 
 
-export function addAiQuestionToConversation(note: InterviewNote) {
+export function addAiQuestionToConversation(index: number,note: InterviewNote) {
     const { addConverse } = ConversationStore.getState();
-    const newConverse = createAiConverseObject(0, note);
+    const newConverse = createAiConverseObject(index, note);
     addConverse(newConverse);
 }
-export function addReply(text: string, isOutgoing: boolean) {
+export async function  addReply(text: string, isOutgoing: boolean) {
     const { conversation, addConverse } = ConversationStore.getState();
     const index = conversation.length
     const repliedTo = index - 1
     if (isOutgoing) {
         const newConverse = addUserConverse(text, index, repliedTo);
         addConverse(newConverse);
-
         // Get the current question converse
         const currentQuestionConverse = conversation.find(c => c.id === repliedTo);
-
         if (currentQuestionConverse && currentQuestionConverse.note) {
             // Evaluate the user's answer
             const evaluation = await evaluateAnswer(
@@ -38,17 +36,15 @@ export function addReply(text: string, isOutgoing: boolean) {
 
             if (evaluation) {
                 useEvaluationStore.getState().addEvaluation(evaluation);
-
-                // Add general feedback as an AI converse
-                const feedbackConverse = createAiConverseObject(0, { category: "Feedback", note: evaluation.remarks || evaluation.generalFeedback });
-                feedbackConverse.repliedTo = newConverse.id; // Reply to user's answer
+                const feedBackIndex = index + 1;
+                const feedbackConverse = createAiConverseObject(feedBackIndex, { category: "Feedback", note: `${evaluation.remarks} ${evaluation.generalFeedback} ${evaluation.detailedFeedback}`  });
+                feedbackConverse.repliedTo = newConverse.id; 
                 addConverse(feedbackConverse);
 
-                // Get next question from the note store
                 const { interviewNotes, setCurrentNoteIndex, currentNoteIndex } = useInterviewNoteStore.getState();
                 if (interviewNotes && interviewNotes.length > currentNoteIndex + 1) {
                     const nextNote = interviewNotes[currentNoteIndex + 1];
-                    addAiQuestionToConversation(nextNote);
+                    addAiQuestionToConversation(index + 2,nextNote);
                     setCurrentNoteIndex(currentNoteIndex + 1);
                 } else {
                     createMessage(Status.INFO, "Interview Complete", "You have answered all questions.");
@@ -75,7 +71,7 @@ export async function initializeConversation() {
     const interviewNotes = await generateAndSetInterviewNotes(jdText, resumeText);
     if (interviewNotes && interviewNotes.length > 0) {
         const firstNote = interviewNotes[0];
-        addAiQuestionToConversation(firstNote);
+        addAiQuestionToConversation(0,firstNote);
         setConversationStarted(true);
 
     } else {
