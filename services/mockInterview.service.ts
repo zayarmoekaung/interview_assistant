@@ -17,6 +17,8 @@ import { InterviewNote } from "@/types/interviewNote.type";
 
 import { getInterviewNotes } from "@/utils/api/getInterviewNotes";
 import { useInterviewNoteStore } from "@/stores/useInterviewNoteStore";
+import { AnswerEvaluation } from "@/stores/useEvaluationStore";
+import { getAnswerEvaluation } from "@/utils/api/getAnswerEvaluation";
 
 export async function generateAndSetInterviewNotes(jdText: string, resumeText: string): Promise<InterviewNote[] | null> {
     const { selectedModel } = useModelStore.getState();
@@ -115,6 +117,46 @@ export async function generateGreeting() {
         createMessage(Status.ERROR,"Error generating greeting",error instanceof Error ? error.message : String(error));
     }finally{
         loading.stop();
+    }finally{
+        loading.stop();
     }
 
+}
+
+export async function evaluateAnswer(
+    questionText: string,
+    answerText: string,
+    questionId: number,
+    answerId: number
+): Promise<AnswerEvaluation | null> {
+    const { selectedModel } = useModelStore.getState();
+    const modelnames = {
+        [ModelType.GEMINI]: "gemini-2.5-flash",
+        [ModelType.OPENAI]: "gpt-4",
+        [ModelType.LOCAL]: "mythomax-l2-13b.Q4_K_M.gguf"
+    };
+    const model = {
+        name: modelnames[selectedModel],
+        type: selectedModel
+    };
+    const loading = createTask("Evaluating Answer");
+    try {
+        const evaluationResponse = await getAnswerEvaluation(model, questionText, answerText);
+
+        const evaluation: AnswerEvaluation = {
+            questionId: questionId,
+            answerId: answerId,
+            questionText: questionText,
+            answerText: answerText,
+            generalFeedback: evaluationResponse.generalFeedback || "No general feedback.",
+            detailedFeedback: evaluationResponse.detailedFeedback || "No detailed feedback."
+        };
+
+        return evaluation;
+    } catch (error) {
+        createMessage(Status.ERROR, "Error evaluating answer", error instanceof Error ? error.message : String(error));
+        return null;
+    } finally {
+        loading.stop();
+    }
 }
