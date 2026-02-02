@@ -40,7 +40,7 @@ export function addReply(text: string, isOutgoing: boolean) {
                 useEvaluationStore.getState().addEvaluation(evaluation);
 
                 // Add general feedback as an AI converse
-                const feedbackConverse = createAiConverseObject(0, { category: "Feedback", note: evaluation.generalFeedback });
+                const feedbackConverse = createAiConverseObject(0, { category: "Feedback", note: evaluation.remarks || evaluation.generalFeedback });
                 feedbackConverse.repliedTo = newConverse.id; // Reply to user's answer
                 addConverse(feedbackConverse);
 

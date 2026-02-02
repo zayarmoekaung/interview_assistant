@@ -17,7 +17,7 @@ import { InterviewNote } from "@/types/interviewNote.type";
 
 import { getInterviewNotes } from "@/utils/api/getInterviewNotes";
 import { useInterviewNoteStore } from "@/stores/useInterviewNoteStore";
-import { AnswerEvaluation } from "@/stores/useEvaluationStore";
+import { AnswerEvaluation } from "@/types/answerEvaluation.type";
 import { getAnswerEvaluation } from "@/utils/api/getAnswerEvaluation";
 
 export async function generateAndSetInterviewNotes(jdText: string, resumeText: string): Promise<InterviewNote[] | null> {
@@ -149,7 +149,9 @@ export async function evaluateAnswer(
             questionText: questionText,
             answerText: answerText,
             generalFeedback: evaluationResponse.generalFeedback || "No general feedback.",
-            detailedFeedback: evaluationResponse.detailedFeedback || "No detailed feedback."
+            detailedFeedback: evaluationResponse.detailedFeedback || "No detailed feedback.",
+            scores: evaluationResponse.scores,
+            remarks: evaluationResponse.remarks,
         };
 
         return evaluation;

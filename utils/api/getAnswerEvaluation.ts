@@ -1,10 +1,11 @@
 import { Model } from "@/types/model.type";
+import { AnswerEvaluation } from "@/types/answerEvaluation.type";
 
 export async function getAnswerEvaluation(
     model: Model,
     question: string,
     answer: string
-): Promise<{ generalFeedback: string; detailedFeedback: string }> {
+): Promise<Omit<AnswerEvaluation, 'questionId' | 'answerId' | 'questionText' | 'answerText'>> {
     const response = await fetch('/api/interview/evaluate', {
         method: 'POST',
         headers: {
@@ -18,11 +19,15 @@ export async function getAnswerEvaluation(
     }
 
     const data = await response.json();
-    
-    // Assuming the backend response structure matches the desired output
-    // You might need to adjust this based on the actual backend response.
+
+    // The API returns a stringified JSON within a 'response' field.
+    // We need to parse that inner string.
+    const parsedResponse = JSON.parse(data.response);
+
     return {
-        generalFeedback: data.response.generalFeedback || "No general feedback from API.",
-        detailedFeedback: data.response.detailedFeedback || "No detailed feedback from API."
+        generalFeedback: parsedResponse.generalFeedback || "No general feedback from API.",
+        detailedFeedback: parsedResponse.detailedFeedback || "No detailed feedback from API.",
+        scores: parsedResponse.scores,
+        remarks: parsedResponse.remarks,
     };
 }

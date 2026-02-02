@@ -1,14 +1,6 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from 'zustand/middleware';
-
-export interface AnswerEvaluation {
-    questionId: number;
-    answerId: number;
-    questionText: string;
-    answerText: string;
-    generalFeedback: string;
-    detailedFeedback: string; // Or a more structured type for detailed feedback
-}
+import { AnswerEvaluation } from "@/types/answerEvaluation.type"; // New import
 
 interface EvaluationState {
     evaluations: AnswerEvaluation[];
