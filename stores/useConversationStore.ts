@@ -3,6 +3,7 @@ import { Converse } from "@/factories/converse/types/converse.type"
 
 import { persist, createJSONStorage } from 'zustand/middleware'
 import { createAiConverseObject } from '@/factories/converse/converse.factory'
+import { AllStoreStates } from "./historyStore"; // Import AllStoreStates
 
 interface ConversationState {
     conversation: Converse[];
@@ -12,13 +13,20 @@ interface ConversationState {
     clearConversation: () => void;
     updateConverseText: (id: number, newText: string) => void;
     toogleLoading: () => void;
+    // New functions
+    clearStore: () => void;
+    restoreStore: (state: AllStoreStates) => void;
 }
+
+const initialState: Omit<ConversationState, "addConverse" | "removeConverse" | "clearConversation" | "updateConverseText" | "toogleLoading" | "clearStore" | "restoreStore"> = {
+    conversation: [],
+    isLoading: false,
+};
 
 export const ConversationStore = create(
     persist<ConversationState>(
         (set, get) => ({
-            conversation: [],
-            isLoading: false,
+            ...initialState, // Set initial state
             addConverse: (converse: Converse) => {
                 const conversation = get().conversation;
                 const newConversation = [...conversation, converse];
@@ -55,7 +63,10 @@ export const ConversationStore = create(
                     isLoading: !loading
                 }
                )
-            }
+            },
+            // New clear and restore functions
+            clearStore: () => set(initialState),
+            restoreStore: (state: AllStoreStates) => set({ conversation: state.conversation, isLoading: state.isLoading }),
         }),
         {
             name: "conversation-storage",
