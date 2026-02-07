@@ -10,9 +10,8 @@ import { Modes } from "@/types/mode.type";
 import { ResumeMatchResponse } from "@/types/resumeMatchResponse.type";
 
 // Define the combined state of all other stores
-interface AllStoreStates {
+export interface AllStoreStates {
     conversation: Converse[];
-    isLoading: boolean; // From useConversationStore & useLoadingStore
     evaluations: AnswerEvaluation[];
     interviewNotes: InterviewNote[];
     currentNoteIndex: number;

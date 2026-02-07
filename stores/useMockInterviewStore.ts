@@ -26,7 +26,6 @@ export const useMockInterviewStore = create(
         (set)=>(
             {
                 ...initialState, // Set initial state
-                version: null, // Note: The original had 'version: null' but not in interface, so keeping it here for consistency if it's meant to be there.
                 setGreeting: (greeting)=> set({greeting}),
                 setAudioBlob: (audioBlob)=>set({audioBlob}),
                 setConversationStarted: (started) => set({ conversationStarted: started }),

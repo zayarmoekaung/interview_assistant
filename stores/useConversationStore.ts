@@ -66,7 +66,7 @@ export const ConversationStore = create(
             },
             // New clear and restore functions
             clearStore: () => set(initialState),
-            restoreStore: (state: AllStoreStates) => set({ conversation: state.conversation, isLoading: state.isLoading }),
+            restoreStore: (state: AllStoreStates) => set({ conversation: state.conversation}),
         }),
         {
             name: "conversation-storage",
