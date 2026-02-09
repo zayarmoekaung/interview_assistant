@@ -1,5 +1,5 @@
 import { createAiConverseObject, createUserConverseObject } from "@/factories/converse/converse.factory";
-import { ConversationStore } from "@/stores/useConversationStore";
+import { useConversationStore } from "@/stores/useConversationStore";
 import { useKnowledgeBaseStore } from "@/stores/useKnowledgeBaseStore";
 import { useMockInterviewStore } from "@/stores/useMockInterviewStore";
 import { useEvaluationStore } from "@/stores/useEvaluationStore"; // New import
@@ -12,12 +12,12 @@ import { useInterviewNoteStore } from "@/stores/useInterviewNoteStore"; // New i
 
 
 export function addAiQuestionToConversation(index: number,note: InterviewNote) {
-    const { addConverse } = ConversationStore.getState();
+    const { addConverse } = useConversationStore.getState();
     const newConverse = createAiConverseObject(index, note);
     addConverse(newConverse);
 }
 export async function  addReply(text: string, isOutgoing: boolean) {
-    const { conversation, addConverse } = ConversationStore.getState();
+    const { conversation, addConverse } = useConversationStore.getState();
     const index = conversation.length
     const repliedTo = index - 1
     if (isOutgoing) {
@@ -79,7 +79,7 @@ export async function initializeConversation() {
     }
 }
 export function restartConversation() {
-    const { clearConversation } = ConversationStore.getState()
+    const { clearConversation } = useConversationStore.getState()
     clearConversation()
 }
 export async function generateGreetingAudio(): Promise<Blob | null> {

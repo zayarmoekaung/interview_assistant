@@ -4,21 +4,37 @@ import { Converse } from "@/factories/converse/types/converse.type"
 import { persist, createJSONStorage } from 'zustand/middleware'
 import { createAiConverseObject } from '@/factories/converse/converse.factory'
 
-interface ConversationState {
+
+// Data-only interface (for persistence/restoration)
+export interface ConversationData {
     conversation: Converse[];
     isLoading: boolean;
+}
+
+// Full state interface (includes data + actions)
+export interface ConversationState extends ConversationData {
+    storeName: string;
     addConverse: (converse: Converse) => void;
     removeConverse: (id: number) => void;
     clearConversation: () => void;
     updateConverseText: (id: number, newText: string) => void;
-    toogleLoading: () => void;
+    toggleLoading: () => void;  
+    // New functions
+    clearStore: () => void;
+    restoreStore: (data: ConversationData) => void;  
+    getSaveableState: () => ConversationData;
 }
 
-export const ConversationStore = create(
+const initialState: ConversationData  = {
+    conversation: [],
+    isLoading: false,
+};
+
+export const useConversationStore = create(
     persist<ConversationState>(
         (set, get) => ({
-            conversation: [],
-            isLoading: false,
+            ...initialState, // Set initial state
+            storeName: "conversationStore",
             addConverse: (converse: Converse) => {
                 const conversation = get().conversation;
                 const newConversation = [...conversation, converse];
@@ -48,14 +64,20 @@ export const ConversationStore = create(
                     }),
                 }));
             },
-            toogleLoading:()=>{
+            toggleLoading:()=>{
                const  loading = get().isLoading;
                set(
                 {
                     isLoading: !loading
                 }
                )
-            }
+            },
+            clearStore: () => set(initialState),
+            restoreStore: (state: ConversationData) => set({ conversation: state.conversation}),
+            getSaveableState: () => ({
+                conversation: get().conversation,
+                isLoading: get().isLoading
+            })
         }),
         {
             name: "conversation-storage",
