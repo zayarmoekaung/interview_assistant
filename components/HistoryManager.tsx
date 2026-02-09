@@ -4,31 +4,18 @@ import { useHistoryStore } from '../stores/historyStore';
 import HistoryEntryCard from './HistoryEntryCard';
 import { restoreHistory } from '../helpers/historyHelpers';
 
-// Define an interface for the props that HistoryManager will accept.
-// This is crucial for passing the actual store instances for restoration.
-interface HistoryManagerProps {
-  // A map of store instances that can be restored.
-  // Each store instance is expected to have a `restoreState` method.
-  storesToRestore: { [key: string]: { restoreState: (state: any) => void; }; };
-}
 
-const HistoryManager: React.FC<HistoryManagerProps> = ({ storesToRestore }) => {
+const HistoryManager: React.FC = () => {
   const { history, clearHistory } = useHistoryStore();
 
   const handleDelete = (timestampToDelete: number) => {
-    // Implement actual deletion logic for a single entry in useHistoryStore
-    // This will likely involve filtering the history array and updating the store.
-    // For now, let's log a message.
-    console.log(`Deleting history entry with timestamp: ${timestampToDelete}`);
     useHistoryStore.setState((state) => ({
       history: state.history.filter(entry => entry.timestamp !== timestampToDelete)
     }));
   };
 
   const handleRestore = (timestampToRestore: number) => {
-    // Call the helper function to restore state
-    restoreHistory(timestampToRestore, storesToRestore);
-    console.log(`Restoring history entry with timestamp: ${timestampToRestore}`);
+    restoreHistory(timestampToRestore);
   };
 
   return (
@@ -38,7 +25,7 @@ const HistoryManager: React.FC<HistoryManagerProps> = ({ storesToRestore }) => {
       {history.length === 0 ? (
         <Text className="text-gray-600 dark:text-gray-400">No history entries yet.</Text>
       ) : (
-        <VStack spacing={3} align="stretch" mb={4}>
+        <VStack align="stretch" mb={4}>
           {history.map((entry) => (
             <HistoryEntryCard
               key={entry.timestamp}

@@ -3,7 +3,7 @@ import { Flex, Text, Spinner, Button } from '@chakra-ui/react';
 import { FaVolumeUp } from 'react-icons/fa';
 import { Converse } from '@/factories/converse/types/converse.type';
 import { generateInterviewQuestion } from '@/services/mockInterview.service';
-import { ConversationStore } from '@/stores/useConversationStore';
+import { useConversationStore } from '@/stores/useConversationStore';
 import { createMessage } from '@/helpers/message/message.helper';
 import { Status } from '@/factories/message';
 
@@ -11,8 +11,8 @@ export const AiConverseBubble: React.FC<{ converse: Converse }> = ({ converse })
     const [localText, setLocalText] = useState(converse.text);
     const [localIsLoading, setLocalIsLoading] = useState(false);
     const [isGeneratingSpeech, setIsGeneratingSpeech] = useState(false);
-    const toogleLoading = ConversationStore().toogleLoading;
-    const updateConverseText = ConversationStore().updateConverseText;
+    const toogleLoading = useConversationStore().toggleLoading;
+    const updateConverseText = useConversationStore().updateConverseText;
 
     useEffect(() => {
         if (converse.note && !converse.text && !localIsLoading) {

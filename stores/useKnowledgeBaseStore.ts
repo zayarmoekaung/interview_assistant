@@ -1,15 +1,17 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from 'zustand/middleware'
-import { AllStoreStates } from "./historyStore"; // Import AllStoreStates
 
-interface KnowledgeBaseState {
+export interface KnowledgeBaseData {
     jdText: string;
     resumeText: string;
+}
+
+interface KnowledgeBaseState extends KnowledgeBaseData{
     setJDText: (text: string) => void;
     setResumeText: (text: string) => void;
     // New functions
     clearStore: () => void;
-    restoreStore: (state: AllStoreStates) => void;
+    restoreStore: (state: KnowledgeBaseData) => void;
 }
 
 const initialState: Omit<KnowledgeBaseState, "setJDText" | "setResumeText" | "clearStore" | "restoreStore"> = {
@@ -25,7 +27,7 @@ export const useKnowledgeBaseStore = create(
             setResumeText: (text: string) => set({ resumeText: text }),
             // New clear and restore functions
             clearStore: () => set(initialState),
-            restoreStore: (state: AllStoreStates) => set({ jdText: state.jdText, resumeText: state.resumeText }),
+            restoreStore: (state: KnowledgeBaseData) => set({ jdText: state.jdText, resumeText: state.resumeText }),
         }),
         {
             name: 'jd-resume-storage',

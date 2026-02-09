@@ -3,30 +3,38 @@ import { Converse } from "@/factories/converse/types/converse.type"
 
 import { persist, createJSONStorage } from 'zustand/middleware'
 import { createAiConverseObject } from '@/factories/converse/converse.factory'
-import { AllStoreStates } from "./historyStore"; // Import AllStoreStates
 
-interface ConversationState {
+
+// Data-only interface (for persistence/restoration)
+export interface ConversationData {
     conversation: Converse[];
     isLoading: boolean;
+}
+
+// Full state interface (includes data + actions)
+export interface ConversationState extends ConversationData {
+    storeName: string;
     addConverse: (converse: Converse) => void;
     removeConverse: (id: number) => void;
     clearConversation: () => void;
     updateConverseText: (id: number, newText: string) => void;
-    toogleLoading: () => void;
+    toggleLoading: () => void;  
     // New functions
     clearStore: () => void;
-    restoreStore: (state: AllStoreStates) => void;
+    restoreStore: (data: ConversationData) => void;  
+    getSaveableState: () => ConversationData;
 }
 
-const initialState: Omit<ConversationState, "addConverse" | "removeConverse" | "clearConversation" | "updateConverseText" | "toogleLoading" | "clearStore" | "restoreStore"> = {
+const initialState: ConversationData  = {
     conversation: [],
     isLoading: false,
 };
 
-export const ConversationStore = create(
+export const useConversationStore = create(
     persist<ConversationState>(
         (set, get) => ({
             ...initialState, // Set initial state
+            storeName: "conversationStore",
             addConverse: (converse: Converse) => {
                 const conversation = get().conversation;
                 const newConversation = [...conversation, converse];
@@ -56,7 +64,7 @@ export const ConversationStore = create(
                     }),
                 }));
             },
-            toogleLoading:()=>{
+            toggleLoading:()=>{
                const  loading = get().isLoading;
                set(
                 {
@@ -64,9 +72,12 @@ export const ConversationStore = create(
                 }
                )
             },
-            // New clear and restore functions
             clearStore: () => set(initialState),
-            restoreStore: (state: AllStoreStates) => set({ conversation: state.conversation}),
+            restoreStore: (state: ConversationData) => set({ conversation: state.conversation}),
+            getSaveableState: () => ({
+                conversation: get().conversation,
+                isLoading: get().isLoading
+            })
         }),
         {
             name: "conversation-storage",

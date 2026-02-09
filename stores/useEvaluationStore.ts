@@ -1,18 +1,20 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from 'zustand/middleware';
 import { AnswerEvaluation } from "@/types/answerEvaluation.type";
-import { AllStoreStates } from "./historyStore"; // Import AllStoreStates
 
-interface EvaluationState {
+export interface EvaluationData {
     evaluations: AnswerEvaluation[];
+}
+interface EvaluationState extends EvaluationData{
+    
     addEvaluation: (evaluation: AnswerEvaluation) => void;
     clearEvaluations: () => void;
     // New functions
     clearStore: () => void;
-    restoreStore: (state: AllStoreStates) => void;
+    restoreStore: (state: EvaluationData) => void;
 }
 
-const initialState: Omit<EvaluationState, "addEvaluation" | "clearEvaluations" | "clearStore" | "restoreStore"> = {
+const initialState: EvaluationData = {
     evaluations: [],
 };
 
@@ -28,7 +30,7 @@ export const useEvaluationStore = create(
             clearEvaluations: () => set({ evaluations: [] }),
             // New clear and restore functions
             clearStore: () => set(initialState),
-            restoreStore: (state: AllStoreStates) => set({ evaluations: state.evaluations }),
+            restoreStore: (state: EvaluationData) => set({ evaluations: state.evaluations }),
         }),
         {
             name: "evaluation-storage",

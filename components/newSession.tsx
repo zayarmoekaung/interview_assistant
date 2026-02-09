@@ -1,10 +1,10 @@
 import { Button } from "@chakra-ui/react";
 import { Tooltip } from "@/components/ui/tooltip"
-import { ConversationStore } from "@/stores/useConversationStore";
+import { useConversationStore } from "@/stores/useConversationStore";
 import { useMockInterviewStore } from "@/stores/useMockInterviewStore"
 import { ClearHistoryIcon } from "./icons/clear.icon";
 export const NewSession = () => {
-    const clearConversation = ConversationStore().clearConversation;
+    const clearConversation = useConversationStore().clearConversation;
     const { setConversationStarted } = useMockInterviewStore.getState();
 
     const handleOnClick = () => {

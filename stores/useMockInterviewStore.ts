@@ -1,21 +1,21 @@
 import {create} from "zustand"
 import { Greeting } from "@/types/interviewResponse.type"
 import { persist, createJSONStorage } from "zustand/middleware"
-import { AllStoreStates } from "./historyStore"; // Import AllStoreStates
 
-interface MockInterviewState {
+export interface MockInterviewData {
     greeting: Greeting | null
     audioBlob: Blob | null
     conversationStarted: boolean
+}
+interface MockInterviewState extends MockInterviewData{
     setGreeting: (greeting: Greeting | null ) => void
     setConversationStarted: (started: boolean) => void
     setAudioBlob: (audioBlob: Blob) => void
-    // New functions
     clearStore: () => void;
-    restoreStore: (state: AllStoreStates) => void;
+    restoreStore: (state: MockInterviewData) => void;
 }
 
-const initialState: Omit<MockInterviewState, "setGreeting" | "setConversationStarted" | "setAudioBlob" | "clearStore" | "restoreStore"> = {
+const initialState: MockInterviewData = {
     greeting: null,
     audioBlob: null,
     conversationStarted: false,
@@ -31,7 +31,7 @@ export const useMockInterviewStore = create(
                 setConversationStarted: (started) => set({ conversationStarted: started }),
                 // New clear and restore functions
                 clearStore: () => set(initialState),
-                restoreStore: (state: AllStoreStates) => set({ greeting: state.greeting, audioBlob: state.audioBlob, conversationStarted: state.conversationStarted }),
+                restoreStore: (state: MockInterviewData) => set({ greeting: state.greeting, audioBlob: state.audioBlob, conversationStarted: state.conversationStarted }),
             }
         ),
         {
