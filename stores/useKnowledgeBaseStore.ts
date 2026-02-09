@@ -7,27 +7,32 @@ export interface KnowledgeBaseData {
 }
 
 interface KnowledgeBaseState extends KnowledgeBaseData{
+    storeName: string;
     setJDText: (text: string) => void;
     setResumeText: (text: string) => void;
-    // New functions
     clearStore: () => void;
     restoreStore: (state: KnowledgeBaseData) => void;
+    getSaveableState: () => KnowledgeBaseData;
 }
 
-const initialState: Omit<KnowledgeBaseState, "setJDText" | "setResumeText" | "clearStore" | "restoreStore"> = {
+const initialState: KnowledgeBaseData = {
     jdText: "",
     resumeText: "",
 };
 
 export const useKnowledgeBaseStore = create(
     persist<KnowledgeBaseState>(
-        (set) => ({
-            ...initialState, // Set initial state
+        (set, get) => ({
+            ...initialState,
+            storeName: "knowledgeBaseStore",
             setJDText: (text: string) => set({ jdText: text }),
             setResumeText: (text: string) => set({ resumeText: text }),
-            // New clear and restore functions
             clearStore: () => set(initialState),
             restoreStore: (state: KnowledgeBaseData) => set({ jdText: state.jdText, resumeText: state.resumeText }),
+            getSaveableState: () => ({
+                jdText: get().jdText,
+                resumeText: get().resumeText,
+            }),
         }),
         {
             name: 'jd-resume-storage',

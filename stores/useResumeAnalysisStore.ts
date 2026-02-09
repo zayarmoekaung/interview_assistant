@@ -6,11 +6,12 @@ export interface ResumeAnalysisData {
      analysisResult: ResumeMatchResponse | null;
 }
 interface ResumeAnalysisState extends ResumeAnalysisData{
+  storeName: string; // Added
   setAnalysisResult: ( result: ResumeMatchResponse | null) => void;
   clearAnalysisResult: () => void;
-  // New functions
   clearStore: () => void;
   restoreStore: (state: ResumeAnalysisData) => void;
+  getSaveableState: () => ResumeAnalysisData; // Added
 }
 
 const initialState: ResumeAnalysisData = {
@@ -19,13 +20,16 @@ const initialState: ResumeAnalysisData = {
 
 export const useResumeAnalysisStore = create(
     persist<ResumeAnalysisState>(
-        (set) => ({
-            ...initialState, // Set initial state
+        (set, get) => ({
+            ...initialState,
+            storeName: "resumeAnalysisStore", // Added
             setAnalysisResult: (result: ResumeMatchResponse | null) => set({ analysisResult: result }),
             clearAnalysisResult: () => set({ analysisResult: null }),
-            // New clear and restore functions
             clearStore: () => set(initialState),
             restoreStore: (state: ResumeAnalysisData) => set({ analysisResult: state.analysisResult }),
+            getSaveableState: () => ({
+                analysisResult: get().analysisResult,
+            }),
         }),
         {
             name: 'resume-analysis-storage',

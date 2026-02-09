@@ -6,10 +6,11 @@ export interface VersionStoreData {
 }
 
 interface VersionStoreState extends VersionStoreData{
+    storeName: string; // Added
     setKbVersion: (kb_version: number) => void;
-    // New functions
     clearStore: () => void;
     restoreStore: (state: VersionStoreData) => void;
+    getSaveableState: () => VersionStoreData; // Added
 }
 
 const initialState: VersionStoreData = {
@@ -18,12 +19,15 @@ const initialState: VersionStoreData = {
 
 export const useVersionStore = create(
     persist<VersionStoreState>(
-        (set) => ({
-            ...initialState, // Set initial state
+        (set, get) => ({
+            ...initialState,
+            storeName: "versionStore", // Added
             setKbVersion: (kb_version: number) => set({ kb_version }),
-            // New clear and restore functions
             clearStore: () => set(initialState),
             restoreStore: (state: VersionStoreData) => set({ kb_version: state.kb_version }),
+            getSaveableState: () => ({
+                kb_version: get().kb_version,
+            }),
         }),
         {
             name: "version_storage",

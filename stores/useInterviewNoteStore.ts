@@ -6,12 +6,14 @@ export interface InterviewNoteData {
     currentNoteIndex:number,
 }
 interface InterviewNoteState  extends InterviewNoteData{
+    storeName: string; // Added
     addInterviewNote: (note: InterviewNote) => void,
     removeInterviewNote: (index: number) => void,
     setInterviewNotes: (notes: InterviewNote[]) => void,
     setCurrentNoteIndex: (currentNoteIndex: number)=> void
     clearStore: () => void;
     restoreStore: (state: InterviewNoteData) => void;
+    getSaveableState: () => InterviewNoteData; // Added
 }
 
 const initialState: InterviewNoteData = {
@@ -20,7 +22,8 @@ const initialState: InterviewNoteData = {
 };
 
 export const useInterviewNoteStore = create<InterviewNoteState>((set, get) => ({
-    ...initialState, // Set initial state
+    ...initialState,
+    storeName: "interviewNoteStore", // Added
     addInterviewNote: (note) => {
         const notes = get().interviewNotes
         const updatedNotes = [...notes, note]
@@ -44,7 +47,10 @@ export const useInterviewNoteStore = create<InterviewNoteState>((set, get) => ({
             currentNoteIndex
         })
     },
-    // New clear and restore functions
     clearStore: () => set(initialState),
     restoreStore: (state: InterviewNoteData) => set({ interviewNotes: state.interviewNotes, currentNoteIndex: state.currentNoteIndex }),
+    getSaveableState: () => ({
+        interviewNotes: get().interviewNotes,
+        currentNoteIndex: get().currentNoteIndex,
+    }),
 }))
