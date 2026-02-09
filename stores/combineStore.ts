@@ -8,7 +8,7 @@ import { useVersionStore } from "./useVersionStore";
 
 import { createRestorableStoreEntry } from '@/helpers/storeHelpers';
 
-interface RestorableStore {
+export interface RestorableStore {
    storeName: string;
    clearStore: () => void;
    restoreStore: (state: any) => void;
