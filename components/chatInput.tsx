@@ -7,6 +7,8 @@ import {
     Button,
 } from "@chakra-ui/react";
 import { useRef, useState, useEffect } from "react";
+import { IoIosSend } from "react-icons/io";
+import { useConversationStore } from '@/stores/useConversationStore';
 
 interface ChatInputProps {
     onSend: (message: string) => void;
@@ -15,7 +17,7 @@ interface ChatInputProps {
 export const ChatInput = ({ onSend }: ChatInputProps) => {
     const [value, setValue] = useState("");
     const textareaRef = useRef<HTMLTextAreaElement | null>(null);
-
+    const ConversationLoading = useConversationStore().isLoading;
     const maxHeight = 160; 
 
     useEffect(() => {
@@ -47,7 +49,7 @@ export const ChatInput = ({ onSend }: ChatInputProps) => {
                 left={"5px"}
                 position={"absolute"}
             >
-                <HStack align="flex-end" >
+                <HStack align="center" justify="center">
                     <Textarea
                         ref={textareaRef}
                         value={value}
@@ -69,10 +71,13 @@ export const ChatInput = ({ onSend }: ChatInputProps) => {
 
                     <Button
                         aria-label="Send message"
+                        width={"20px"}
+                        height={"20px"}
+                        rounded={"20px"}
                         onClick={handleSend}
-                        disabled={!value.trim()}
+                        disabled={!value.trim() || ConversationLoading}
                         colorScheme="teal"
-                    >Send</Button>
+                    ><IoIosSend /></Button>
 
                     <Button
                         aria-label="Options"

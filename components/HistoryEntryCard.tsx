@@ -1,5 +1,8 @@
 import React from 'react';
 import { Box, Text, Button, Flex } from '@chakra-ui/react';
+import { TbRestore } from "react-icons/tb";
+import { MdDeleteForever } from "react-icons/md";
+import { Tooltip } from './ui/tooltip';
 
 interface HistoryEntryCardProps {
   timestamp: number;
@@ -23,26 +26,35 @@ const HistoryEntryCard: React.FC<HistoryEntryCardProps> = ({
       shadow="md"
       className="bg-white dark:bg-gray-800 mb-2"
     >
-      <Flex justify="space-between" align="center" className="mb-2">
-        <Text fontWeight="bold" className="text-gray-900 dark:text-white">
-          History: {formattedDate}
+      <Flex justify="space-between" align="flex-start" className="mb-2" direction="column" gap="5">
+        <Text fontWeight="bold" className="text-gray-900 dark:text-white" fontSize={10}>
+          {formattedDate}
         </Text>
-        <Flex>
+        <Flex gap={"5px"}>
+          <Tooltip content="Restore Session">
           <Button
             size="sm"
+            width={"20px"}
+            height={"20px"}
+            rounded={"20px"}
             colorScheme="teal"
             onClick={() => onRestore(timestamp)}
-            className="mr-2"
           >
-            Restore
+            <TbRestore/>
           </Button>
+          </Tooltip>
+           <Tooltip content="Delete Session">
           <Button
             size="sm"
+            width={"20px"}
+            height={"20px"}
+            rounded={"20px"}
             colorScheme="red"
             onClick={() => onDelete(timestamp)}
           >
-            Delete
+            <MdDeleteForever />
           </Button>
+          </Tooltip>
         </Flex>
       </Flex>
       {/* You might want to display a summary of the state here later */}

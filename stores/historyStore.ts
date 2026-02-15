@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { CombineStore } from './combineStore';
+import { persist, createJSONStorage } from 'zustand/middleware';
 
 // Define the structure for a single history entry
 interface HistoryEntry {
@@ -9,16 +10,35 @@ interface HistoryEntry {
 
 // Define the HistoryStore's state
 interface HistoryStoreState {
-  history: HistoryEntry[];
-  addHistory: (stateSnapshot: CombineStore) => void; 
+  history: Record<string, HistoryEntry>; // Changed to object with hexakey as key for direct lookup
+  addHistory: (historyEntry: HistoryEntry, hexakey: string) => void;
+  getHistory: (hexakey: string) => HistoryEntry | undefined; 
+  deleteHistoryByKey: (hexakey: string) => void;
   clearHistory: () => void;
 }
 
-export const useHistoryStore = create<HistoryStoreState>((set) => ({
-  history: [],
-  addHistory: (stateSnapshot) =>
-    set((state) => ({
-      history: [...state.history, { timestamp: Date.now(), state: stateSnapshot }],
-    })),
-  clearHistory: () => set({ history: [] }),
-}));
+export const useHistoryStore = create(
+  persist<HistoryStoreState>(
+    (set, get) => ({
+      history: {},
+      addHistory: (entry,hexakey) => {
+        set((state) => ({
+          history: { ...state.history, [hexakey]: entry },
+        }));
+      },
+      getHistory: (hexakey: string) => get().history[hexakey],
+      deleteHistoryByKey: (hexakey) => {
+        set((state) => {
+          const newHistory = { ...state.history };
+          delete newHistory[hexakey]; 
+          return { history: newHistory };
+        });
+      },
+      clearHistory: () => set({ history: {} }),
+    }),
+    {
+      name: "historyStorage",
+      storage: createJSONStorage(() => localStorage),
+    }
+  )
+);
