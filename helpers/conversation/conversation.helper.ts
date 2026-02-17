@@ -85,7 +85,7 @@ export function restartConversation() {
 export async function generateGreetingAudio(): Promise<Blob | null> {
     const { greeting, audioBlob, setAudioBlob } = useMockInterviewStore.getState()
     if (audioBlob) {
-        //return audioBlob;
+        return audioBlob;
     }
     if (greeting && greeting.message) {
         const blob = await generateTTSAudio(greeting.message)
