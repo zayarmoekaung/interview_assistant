@@ -1,10 +1,10 @@
 import React from 'react';
 import { Flex, Text, Box, Spinner } from '@chakra-ui/react';
-import { ConversationStore } from '@/stores/useConversationStore';
+import { useConversationStore } from '@/stores/useConversationStore';
 import { ConverseBubble } from './ConverseBubble';
 
 export const ConversationBubbles: React.FC = () => {
-    const conversation = ConversationStore((state) => state.conversation);
+    const conversation = useConversationStore((state) => state.conversation);
 
     return (
         <>

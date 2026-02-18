@@ -1,10 +1,10 @@
 import { Button } from "@chakra-ui/react";
 import { Tooltip } from "@/components/ui/tooltip"
-import { ConversationStore } from "@/stores/useConversationStore";
+import { useConversationStore } from "@/stores/useConversationStore";
 import { useMockInterviewStore } from "@/stores/useMockInterviewStore"
-import { ClearHistoryIcon } from "./icons/clear.icon";
+import { AiOutlineClear } from "react-icons/ai";
 export const NewSession = () => {
-    const clearConversation = ConversationStore().clearConversation;
+    const clearConversation = useConversationStore().clearConversation;
     const { setConversationStarted } = useMockInterviewStore.getState();
 
     const handleOnClick = () => {
@@ -15,7 +15,7 @@ export const NewSession = () => {
         <>
             <Tooltip content="Clear Conversation and Start New Session">
                 <Button w={"30px"} h={"30px"} rounded={"30px"} onClick={handleOnClick}>
-                    <ClearHistoryIcon />
+                    <AiOutlineClear />
                 </Button>
             </Tooltip>
         </>
