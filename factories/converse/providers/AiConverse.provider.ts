@@ -21,9 +21,13 @@ export class AiConverseProvider implements Converse {
         this.repliedTo = repliedTo;
     }
     async playAudio(){
-        console.log("Clicked");
         if (this.audioBlob) {
-            await playAudioFromBlob(this.audioBlob);
+            try {
+                await playAudioFromBlob(this.audioBlob);
+            } catch (error) {
+                this.audioBlob = null;
+                return this.playAudio;
+            }
             return
         }
         const audioBlob = await generateTTSAudio(this.text);

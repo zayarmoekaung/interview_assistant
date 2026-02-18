@@ -25,7 +25,11 @@ export const useMockInterviewStore = create(
         ),
         {
             name: "mock-interview-storage",
-            storage: createJSONStorage(()=> localStorage)
+            storage: createJSONStorage(()=> localStorage),
+            partialize: (state) => {
+                const { audioBlob, ...rest } = state;
+                return { ...rest, audioBlob: null };
+            }
         }
     )
 );
