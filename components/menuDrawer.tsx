@@ -1,10 +1,14 @@
+import { useState } from "react";
 import { IconButton, Button, CloseButton, Drawer, Portal, Flex, Textarea, Field } from "@chakra-ui/react";
+import HistoryManager from "./HistoryManager";
 import { useKnowledgeBaseStore } from "@/stores/useKnowledgeBaseStore";
 import { useVersionStore } from "@/stores/useVersionStore";
+import { FaHistory } from "react-icons/fa";
 import Humberger from "./icons/humberger.icon";
 import { useRef } from "react";
 export const MenuDrawer = () => {
     const { jdText, resumeText, setJDText, setResumeText } = useKnowledgeBaseStore();
+    const [showHistory, setShowHistory] = useState<boolean>(false)
     const { kb_version } = useVersionStore();
     const jdRef = useRef<HTMLTextAreaElement>(null);
     const resumeRef = useRef<HTMLTextAreaElement>(null);
@@ -16,32 +20,39 @@ export const MenuDrawer = () => {
             setResumeText(resumeRef.current.value);
         }
     }
+    const handleShowHistory = () => {
+        setShowHistory(!showHistory);
+    }
     return (
         <Drawer.Root>
             <Drawer.Trigger asChild>
                 <IconButton rounded="full" scale={1} h="40px" w="40px" aria-label="Menu Button" variant="ghost" color="white" _hover={{ bg: "gray.700" }}>
-                   <Humberger/>
+                    <Humberger />
                 </IconButton>
             </Drawer.Trigger>
             <Portal>
-                <Drawer.Backdrop zIndex={50}/>
+                <Drawer.Backdrop zIndex={50} />
                 <Drawer.Positioner>
                     <Drawer.Content>
                         <Drawer.Header>
-                            <Drawer.Title>Data Set</Drawer.Title>
-                            <i>kb version - { kb_version }</i>
+                            <Drawer.Title><FaHistory className="cursor-pointer" onClick={handleShowHistory} /></Drawer.Title>
+                            <i>kb version - {kb_version}</i>
                         </Drawer.Header>
                         <Drawer.Body>
-                            <Flex direction="column" gap="4" marginBottom="10px">
-                                <Field.Root>
-                                    <Field.Label>Job Description</Field.Label>
-                                    <Textarea size={'md'} minH="30vh" h="auto" ref={jdRef} defaultValue={jdText} placeholder="Job Description" />
-                                </Field.Root>
-                                <Field.Root>
-                                    <Field.Label>Resume</Field.Label>
-                                    <Textarea size={'md'} minH="30vh" h="auto" ref={resumeRef} defaultValue={resumeText} placeholder="Resume" />
-                                </Field.Root>
-                            </Flex>
+                            {showHistory ?
+                                <HistoryManager />
+                                :
+                                <Flex direction="column" gap="4" marginBottom="10px">
+                                    <Field.Root>
+                                        <Field.Label>Job Description</Field.Label>
+                                        <Textarea size={'md'} minH="30vh" h="auto" ref={jdRef} defaultValue={jdText} placeholder="Job Description" />
+                                    </Field.Root>
+                                    <Field.Root>
+                                        <Field.Label>Resume</Field.Label>
+                                        <Textarea size={'md'} minH="30vh" h="auto" ref={resumeRef} defaultValue={resumeText} placeholder="Resume" />
+                                    </Field.Root>
+                                </Flex>
+                            }
                             <hr />
                         </Drawer.Body>
                         <Drawer.Footer>

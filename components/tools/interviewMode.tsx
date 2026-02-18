@@ -12,15 +12,15 @@ import { NewSession } from "../newSession";
 import Chat from "../icons/chat.icon";
 export const InterviewMode = () => {
     const { globalMode, switchMode } = useModeStore()
-    const { greeting } = useMockInterviewStore();
+    const { greeting, conversationStarted } = useMockInterviewStore();
     const handleModeSwitch = () => {
         switchMode(Modes.INTERVIEW)
-        if (!greeting || !isUptodate(greeting.kb_version)) {
+        if ((!greeting || !isUptodate(greeting.kb_version)) && !conversationStarted) {
             generateGreeting();
         }
     }
     const handleSend = (message: string) => {
-        addReply(message,true);
+        addReply(message, true);
     }
     return (
         <MotionFlex
@@ -53,8 +53,12 @@ export const InterviewMode = () => {
                 </MotionFlex>
                 :
                 <>
-                <NewSession/>
-                <ChatInput onSend={handleSend} />
+                    {conversationStarted &&
+                        <>
+                            <NewSession />
+                            <ChatInput onSend={handleSend} />
+                        </>
+                    }
                 </>
             }
         </MotionFlex>

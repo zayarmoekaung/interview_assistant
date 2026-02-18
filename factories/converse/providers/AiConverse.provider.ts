@@ -16,12 +16,11 @@ export class AiConverseProvider implements Converse {
         this.id = id;
         this.isOutgoing = false;
         this.note = note;
-        this.text = "";
+        this.text = note.category === "Feedback" ? note.note : ""; 
         this.timestamp = getTimeStamp();
         this.repliedTo = repliedTo;
     }
     async playAudio(){
-        console.log("Clicked");
         if (this.audioBlob) {
             await playAudioFromBlob(this.audioBlob);
             return
